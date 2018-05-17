@@ -1,21 +1,17 @@
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Competence.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\ParamEm2.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\com\soprasteria\interop\introrest\controller\ExampleRestController.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\correction\java\com\soprasteria\interop\introrest\client\ClientRestEquipe.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Exercice.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\ParamMath.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\client\ClientRestEleve.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Calcul.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\controller\EleveRestController.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Exo2Math.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\SousCompetence.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\correction\java\com\soprasteria\interop\introrest\controller\EquipeRestController.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\correction\java\com\soprasteria\interop\introrest\model\Equipe.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\com\soprasteria\interop\introrest\IntroRestApplication.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Exo1Math.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\ParamEm1.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Eleve.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Exo1Lecture.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\ParamEl1.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Classe.java
-C:\Users\paulc\Downloads\TP2 _ Intro REST avec Spring Boot _Correction\tp2-intro-rest-cor\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Borne.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Exercice.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\ParamEm2.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Classe.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\ParamMath.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\com\soprasteria\interop\introrest\controller\ExampleRestController.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Exo2Math.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\ParamEm1.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Exo1Math.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\SousCompetence.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Competence.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\client\ClientRestEleve.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Calcul.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Exo1Lecture.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\com\soprasteria\interop\introrest\IntroRestApplication.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Eleve.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\Borne.java
+C:\Users\paulc\OneDrive\Documents\4A IPS\ApiProjet4A\ApiProjet4A\tp2-intro-rest\src\main\java\fr\ensim\projet4a\model\ParamEl1.java

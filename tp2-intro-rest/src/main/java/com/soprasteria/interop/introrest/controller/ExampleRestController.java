@@ -68,8 +68,23 @@ public class ExampleRestController {
 			}
 
 			return ResponseEntity.notFound().build();
-		}		
+		}	
 		
+//		/**
+//		 * Récupère l'éleve grace à son nomprenom
+//		 * @param nomprenom
+//		 * @return l'élève
+//		 */
+//		@GetMapping("/eleve/{nomprenom}")
+//		public ResponseEntity<Eleve> getEquipe(@PathVariable @NotNull String nomprenom) {
+//			for(int i=1;i<=fakeSeq.get();i++) {
+//				if(fakeDb.get(i).getNomPrenom().equals(nomprenom)) {
+//					return ResponseEntity.ok(fakeDb.get(i));
+//				}
+//			}
+//			return ResponseEntity.notFound().build();
+//		}	
+//		
 		/**
 		 * Supprime l'éleve grace à son ID
 		 * @param id
