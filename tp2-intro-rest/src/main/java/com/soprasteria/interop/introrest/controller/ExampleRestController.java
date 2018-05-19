@@ -1,40 +1,27 @@
 package com.soprasteria.interop.introrest.controller;
 
 import java.net.URI;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import database.DBService;
 import fr.ensim.projet4a.model.Classe;
 import fr.ensim.projet4a.model.Eleve;
 
+@CrossOrigin(origins = "*", maxAge = 0)
 @RestController
-public class ExampleRestController {
-
-	// Simulation d'une persistence de notre ressource en attribut d'instance
-		// pour simplifier le TP. Bien évidemment, on ne fait pas ça en tant normal
-		// ... car c'est stateful !
-		private AtomicInteger fakeSeq = new AtomicInteger(1);
-		private Map<Integer, Eleve> fakeDb = new ConcurrentHashMap<Integer, Eleve>();
-		private AtomicInteger fakeSeqc = new AtomicInteger(1);
-		private Map<Integer, Classe> fakeDbc = new ConcurrentHashMap<Integer, Classe>();
-		
-		
+public class ExampleRestController {		
 		/*
-		 * Toutes les actions disponible pour gérer les élèves;
+		 * Toutes les actions disponibles pour gérer les élèves;
 		 */	
 		
 		/**
@@ -43,32 +30,41 @@ public class ExampleRestController {
 		 * @return l'élève créé
 		 */
 		@PostMapping("/eleve")
-		public ResponseEntity<Eleve> postEquipe(@RequestBody @Valid Eleve eleve) {
-			// affectation d'un id et persistance
-			eleve.setID(fakeSeq.incrementAndGet());
-			fakeDb.put(eleve.getID(), eleve);
-
+		public ResponseEntity<Eleve> postEleve(@RequestBody @Valid Eleve eleve) {
 			// URI de localisation de la ressource
-			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(eleve.getID())
-					.toUri();
-
+			System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{nomprenom,dateDeNaissance,classeName}").buildAndExpand(eleve).toUri();
+			DBService.addEleveToDB(eleve.getNomPrenom(), eleve.getDateDeNaissance(),eleve.getClasseName());
 			// réponse 202 avec la localisation et la ressource créée
 			return ResponseEntity.created(location).body(eleve);
 		}	
 		
 		/**
-		 * Récupère l'éleve grace à son ID
-		 * @param id
-		 * @return l'élève
+		 * Création d'une classe
+		 * @param classe
+		 * @return la classe créé
 		 */
-		@GetMapping("/eleve/{id}")
-		public ResponseEntity<Eleve> getEquipe(@PathVariable @NotNull Integer id) {
-			if (fakeDb.containsKey(id)) {
-				return ResponseEntity.ok(fakeDb.get(id));
-			}
-
-			return ResponseEntity.notFound().build();
+		@PostMapping("/classe")
+		public ResponseEntity<Classe> postClasse(@RequestBody @Valid Classe classe) {
+			
+			// URI de localisation de la ressource
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{nom}").buildAndExpand(classe).toUri();
+			
+			DBService.addClasseToDB(classe.getNom());
+			// réponse 202 avec la localisation et la ressource créée
+			return ResponseEntity.created(location).body(classe);
 		}	
+		
+		/**
+		 * Récupère la classe grace à son ID
+		 * @param nomClasse
+		 * @return la classe
+		 */
+		@GetMapping("/classe/{nom}")
+		public Classe getClasse(@PathVariable @NotNull String nom) {
+			Classe cl=DBService.getClasseFromDB(nom);
+			return cl;
+		}		
 		
 //		/**
 //		 * Récupère l'éleve grace à son nomprenom
@@ -76,56 +72,51 @@ public class ExampleRestController {
 //		 * @return l'élève
 //		 */
 //		@GetMapping("/eleve/{nomprenom}")
-//		public ResponseEntity<Eleve> getEquipe(@PathVariable @NotNull String nomprenom) {
-//			for(int i=1;i<=fakeSeq.get();i++) {
-//				if(fakeDb.get(i).getNomPrenom().equals(nomprenom)) {
-//					return ResponseEntity.ok(fakeDb.get(i));
-//				}
-//			}
-//			return ResponseEntity.notFound().build();
+//		public ResponseEntity<ArrayList<Eleve>> getEquipe(@PathVariable @NotNull String nomprenom) {
+//			return ResponseEntity.ok( DBService.getEleveFromDB(nomprenom));
 //		}	
-//		
-		/**
-		 * Supprime l'éleve grace à son ID
-		 * @param id
-		 * @return
-		 */
-		@DeleteMapping("/eleve/{id}")
-		public ResponseEntity<Eleve> deleteEquipe(@PathVariable @NotNull Integer id) {
-			if (fakeDb.containsKey(id)) {
-				fakeDb.remove(id);
-				return ResponseEntity.noContent().build();
-			}
-
-			return ResponseEntity.notFound().build();
-		}
 		
+//		/**
+//		 * Supprime l'éleve grace à son ID
+//		 * @param id
+//		 * @return
+//		 */
+//		@DeleteMapping("/eleve/{id}")
+//		public ResponseEntity<Eleve> deleteEquipe(@PathVariable @NotNull Integer id) {
+//			if (fakeDb.containsKey(id)) {
+//				fakeDb.remove(id);
+//				return ResponseEntity.noContent().build();
+//			}
+//
+//			return ResponseEntity.notFound().build();
+//		}
+//		
 		/**
 		 * Modidie l'éleve grace à son ID
 		 * @param id
 		 * @param eleve
 		 * @return
 		 */
-		@PutMapping("/eleve/{id}")
-		public ResponseEntity<Void> deleteEquipe(@PathVariable @NotNull Integer id, @RequestBody @Valid Eleve eleve) {
-			if (fakeDb.containsKey(id)) {
-				// replace
-				eleve.setID(id);
-				fakeDb.put(id, eleve);
-
-				return ResponseEntity.ok().build();
-			} else {
-				// affectation d'un id et persistance
-				eleve.setID(fakeSeq.incrementAndGet());
-				fakeDb.put(eleve.getID(), eleve);
-
-				// URI de localisation de la ressource
-				URI location = ServletUriComponentsBuilder.fromCurrentRequest().build(eleve.getID());
-
-				// réponse 202 avec la localisation et la ressource créée
-				return ResponseEntity.created(location).build();
-			}
-		}	
+//		@PutMapping("/eleve/{id}")
+//		public ResponseEntity<Void> deleteEquipe(@PathVariable @NotNull Integer id, @RequestBody @Valid Eleve eleve) {
+//			if (fakeDb.containsKey(id)) {
+//				// replace
+//				eleve.setID(id);
+//				fakeDb.put(id, eleve);
+//
+//				return ResponseEntity.ok().build();
+//			} else {
+//				// affectation d'un id et persistance
+//				eleve.setID(fakeSeq.incrementAndGet());
+//				fakeDb.put(eleve.getID(), eleve);
+//
+//				// URI de localisation de la ressource
+//				URI location = ServletUriComponentsBuilder.fromCurrentRequest().build(eleve.getID());
+//
+//				// réponse 202 avec la localisation et la ressource créée
+//				return ResponseEntity.created(location).build();
+//			}
+//		}	
 //		
 //		/*
 //		 * Toutes les actions disponible pour gérer les classes;

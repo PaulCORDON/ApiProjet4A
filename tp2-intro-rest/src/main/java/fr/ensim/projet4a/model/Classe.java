@@ -12,7 +12,9 @@ public class Classe {
 		this.nom = nom;
 		this.listeEleve = new ArrayList<Eleve>();
 	}
-
+	public Classe() {
+	}
+	
 	public String getNom() {
 		return nom;
 	}

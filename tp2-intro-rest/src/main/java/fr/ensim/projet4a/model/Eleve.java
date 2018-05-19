@@ -4,27 +4,36 @@ import javax.validation.constraints.NotEmpty;
 //@JsonIgnoreProperties(value = { "id" })
 
 public class Eleve {
-	private int ID;
-	@NotEmpty
-	private String nomPrenom;
-	private Date dateDeNaissance;
-	public Eleve () {
-		
-		
-	}
-	public Eleve(int iD, String nomPrenom, Date dateDeNaissance) {
-		
-		ID = iD;
-		
+	public Eleve(@NotEmpty String nomPrenom, Date dateDeNaissance) {
+		super();
 		this.nomPrenom = nomPrenom;
 		this.dateDeNaissance = dateDeNaissance;
 	}
-	
-	public int getID() {
-		return ID;
+	public Eleve() {
+		super();
 	}
-	public void setID(int iD) {
-		ID = iD;
+	@NotEmpty
+	private String nomPrenom;
+	private Date dateDeNaissance;
+	private int classeId;
+	private String classeName;
+	
+	public String getClasseName() {
+		return classeName;
+	}
+	public void setClasseName(String classeName) {
+		this.classeName = classeName;
+	}
+	public int getClasseId() {
+		return classeId;
+	}
+	public void setClasseId(int classeId) {
+		this.classeId = classeId;
+	}
+	public Eleve( String nomPrenom, Date dateDeNaissance,String classeName) {
+		this.nomPrenom = nomPrenom;
+		this.dateDeNaissance = dateDeNaissance;
+		this.classeName=classeName;
 	}
 	public String getNomPrenom() {
 		return nomPrenom;
