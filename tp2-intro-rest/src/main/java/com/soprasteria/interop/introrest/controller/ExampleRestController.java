@@ -1,6 +1,8 @@
 package com.soprasteria.interop.introrest.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -20,6 +22,9 @@ import fr.ensim.projet4a.model.Eleve;
 @CrossOrigin(origins = "*", maxAge = 0)
 @RestController
 public class ExampleRestController {		
+	
+	
+	
 		/*
 		 * Toutes les actions disponibles pour gérer les élèves;
 		 */	
@@ -39,32 +44,7 @@ public class ExampleRestController {
 			return ResponseEntity.created(location).body(eleve);
 		}	
 		
-		/**
-		 * Création d'une classe
-		 * @param classe
-		 * @return la classe créé
-		 */
-		@PostMapping("/classe")
-		public ResponseEntity<Classe> postClasse(@RequestBody @Valid Classe classe) {
-			
-			// URI de localisation de la ressource
-			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{nom}").buildAndExpand(classe).toUri();
-			
-			DBService.addClasseToDB(classe.getNom());
-			// réponse 202 avec la localisation et la ressource créée
-			return ResponseEntity.created(location).body(classe);
-		}	
-		
-		/**
-		 * Récupère la classe grace à son ID
-		 * @param nomClasse
-		 * @return la classe
-		 */
-		@GetMapping("/classe/{nom}")
-		public Classe getClasse(@PathVariable @NotNull String nom) {
-			Classe cl=DBService.getClasseFromDB(nom);
-			return cl;
-		}		
+	
 		
 //		/**
 //		 * Récupère l'éleve grace à son nomprenom
@@ -117,30 +97,51 @@ public class ExampleRestController {
 //				return ResponseEntity.created(location).build();
 //			}
 //		}	
-//		
-//		/*
-//		 * Toutes les actions disponible pour gérer les classes;
-//		 */	
-//		
-//		/**
-//		 * Création d'une classe
-//		 * @param  Classe
-//		 * @return la classe créée
-//		 */
-//		@PostMapping("/classe")
-//		public ResponseEntity< Classe> postEquipe(@RequestBody @Valid Classe  classe) {
-//			// affectation d'un id et persistance
-//			 classe.setNom(nom);(fakeSeq.incrementAndGet());
-//			fakeDb.put( classe.getID(),  classe);
-//
-//			// URI de localisation de la ressource
-//			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand( classe.getID())
-//					.toUri();
-//
-//			// réponse 202 avec la localisation et la ressource créée
-//			return ResponseEntity.created(location).body(eleve);
-//		}	
-//		
+		
+		/*
+		 * Toutes les actions disponible pour gérer les classes;
+		 */	
+		/**
+		 * Création d'une classe
+		 * @param classe
+		 * @return la classe créé
+		 */
+		@PostMapping("/classe")
+		public ResponseEntity<Classe> postClasse(@RequestBody @Valid Classe classe) {
+			
+			// URI de localisation de la ressource
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{nom}").buildAndExpand(classe).toUri();
+			
+			DBService.addClasseToDB(classe.getNom());
+			// réponse 202 avec la localisation et la ressource créée
+			return ResponseEntity.created(location).body(classe);
+		}	
+		
+		/**
+		 * Récupère la classe grace à son nom
+		 * @param nomClasse
+		 * @return la classe
+		 */
+		@GetMapping("/classe/{nom}")
+		public Classe getClasse(@PathVariable @NotNull String nom) {
+			Classe cl=DBService.getClasseFromDB(nom);
+			return cl;
+		}	
+		
+		/**
+		 * Récupère toutes les classes 
+		 * @return toutes les classes
+		 */
+		@GetMapping("/classe")
+		public ArrayList<Classe> getAllClasse() {
+			return DBService.getAllClasseFromDB();
+		}	
+
+		
+		
+		
+		
+
 //		/**
 //		 * Récupère l'éleve grace à son ID
 //		 * @param id

@@ -66,10 +66,54 @@ public class DBService {
 		return conn;
 	}
 
-	
-	
 	/*marche*/
-	public static Classe getClasseFromDB(String nom) {
+	public static ArrayList<Classe> getAllClasseFromDB(){
+		ArrayList<Classe> TabClasse = new ArrayList<Classe>();
+		log("dans le get  all classe");
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		
+		try {
+			conn = makeJDBCConnection();
+			String selectQueryStatement = "SELECT * FROM classe";
+			prepareStat = conn.prepareStatement(selectQueryStatement);			
+			// execute select SQL statement
+			ResultSet rs = prepareStat.executeQuery();
+			
+			while (rs.next()) {
+				Classe cl=new Classe();
+				cl=getClasseFromDB(rs.getString("nom"));
+				TabClasse.add(cl);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(prepareStat!=null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+			
+		}
+		return TabClasse;
+		
+	}
+	/*marche*/
+ 	public static Classe getClasseFromDB(String nom) {
 		log("dans le get classe");
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
