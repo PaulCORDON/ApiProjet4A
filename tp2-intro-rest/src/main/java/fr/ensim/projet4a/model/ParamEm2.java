@@ -1,95 +1,113 @@
 package fr.ensim.projet4a.model;
 
-public class ParamEm2 extends ParamMath{
-	 private int typeRep;
-	    /**
-	     * type de réponse à donner par l'élève
-	     */
+public class ParamEm2 extends ParamMath {
+	/**
+	 * nom du parametre donner par le prof
+	 */
+	public String nom;
 
-	    private int nbCalcul;
-	    /**
-	     * Nombre de question
-	     */
+	/**
+	 * type de rï¿½ponse ï¿½ donner par l'ï¿½lï¿½ve
+	 */
+	private int typeRep;
+	
+	/**
+	 * Nombre de question
+	 */
+	private int nbCalcul;
+	
 
-	    private int valMaxOperande;
+	private int valMaxOperande;
 
-	    private Boolean nombrePair;
-	    private Boolean nombreImpair;
-	    private int typeNombre;
+	private Boolean nombrePair;
+	private Boolean nombreImpair;
+	private int typeNombre;
 
+	private Boolean repDeuxBornes;
+	private Boolean repQuatreBornes;
+	private Boolean repPaveNum;
+	private Boolean calcChaine;
 
-	    private Boolean repDeuxBornes;
-	    private Boolean repQuatreBornes;
-	    private Boolean repPaveNum;
+	public ParamEm2()
+	/**
+	 * Constructeur de paramï¿½tres par dï¿½fault
+	 */
+	{
+		super();
+		typeRep = 0;
+		nbCalcul = 5;
+		nombrePair = true;
+		nombreImpair = true;
+		repDeuxBornes = false;
+		repQuatreBornes = false;
+		repPaveNum = true;
+		valMaxOperande = 10;
+		typeNombre = 0;
+	}
 
+	public ParamEm2(String nom,Long t, Boolean p, Boolean[] o, int typeRep, int nbCalcul, int valMaxOperande, boolean nombreImpair,
+			boolean nombrePair, boolean repDeuxBornes, boolean repPaveNum, boolean repQuatreBornes, boolean calc)
+	/**
+	 * Constructeur de paramï¿½tres personalisï¿½s
+	 */
+	{
+		super(t, p, o);
+		this.nom=nom;
+		this.calcChaine = calc;
+		this.typeRep = typeRep;
+		this.nbCalcul = nbCalcul;
+		this.nombrePair = nombrePair;
+		this.nombreImpair = nombreImpair;
+		this.repDeuxBornes = repDeuxBornes;
+		this.repQuatreBornes = repQuatreBornes;
+		this.repPaveNum = repPaveNum;
+		this.valMaxOperande = valMaxOperande;
+		if (nombrePair) {
+			this.typeNombre = 0;
+		}
+		if (nombreImpair) {
+			this.typeNombre = 1;
+		}
+		if (nombreImpair && nombrePair) {
+			this.typeNombre = 2;
+		}
 
+	}
 
+	public int gettypeRep() {
+		return typeRep;
+	}
 
-	    public ParamEm2()
-	    /**
-	     * Constructeur de paramètres par défault
-	     */
-	    {
-	        super();
-	        typeRep = 0;
-	        nbCalcul = 5;
-	        nombrePair = true;
-	        nombreImpair = true;
-	        repDeuxBornes = false;
-	        repQuatreBornes = false;
-	        repPaveNum = true;
-	        valMaxOperande = 10;
-	        typeNombre = 0;
-	    }
+	public int getNbCalcul() {
+		return nbCalcul;
+	}
 
-	    public ParamEm2(int typeRep,int nbCalcul,int valMaxOperande,boolean nombreImpair,boolean nombrePair,boolean repDeuxBornes,boolean repPaveNum,boolean repQuatreBornes)
-	    /**
-	     * Constructeur de paramètres personalisés
-	     */
-	    {
-	        super();
-	        this.typeRep = typeRep;
-	        this.nbCalcul = nbCalcul;
-	        this.nombrePair = nombrePair;
-	        this.nombreImpair = nombreImpair;
-	        this.repDeuxBornes = repDeuxBornes;
-	        this.repQuatreBornes = repQuatreBornes;
-	        this.repPaveNum = repPaveNum;
-	        this.valMaxOperande = valMaxOperande;
-	        if (nombrePair){
-	            this.typeNombre = 0;
-	        }
-	        if(nombreImpair){
-	            this.typeNombre = 1;
-	        }
-	        if(nombreImpair && nombrePair){
-	            this.typeNombre = 2;
-	        }
+	public int getValMaxOperande() {
+		return valMaxOperande;
+	}
 
+	public Boolean getNombrePair() {
+		return nombrePair;
+	}
 
-	    }
+	public Boolean getNombreImpair() {
+		return nombreImpair;
+	}
 
-	    /**
-	     * @return nbBornes
-	     */
-	    public int gettypeRep() {
-	        return typeRep;
-	    }
+	public Boolean getRepDeuxBornes() {
+		return repDeuxBornes;
+	}
 
-	    public int getNbCalcul() {return nbCalcul;}
+	public Boolean getRepQuatreBornes() {
+		return repQuatreBornes;
+	}
 
-	    public int getValMaxOperande() {return valMaxOperande;}
+	public Boolean getRepPaveNum() {
+		return repPaveNum;
+	}
 
-	    public Boolean getNombrePair() {return nombrePair;}
-
-	    public Boolean getNombreImpair() {return nombreImpair;}
-
-	    public Boolean getRepDeuxBornes() {return repDeuxBornes;}
-
-	    public Boolean getRepQuatreBornes() {return repQuatreBornes;}
-
-	    public Boolean getRepPaveNum() {return repPaveNum;}
-
-	    public int getTypeNombre(){return typeNombre;}
+	public int getTypeNombre() {
+		return typeNombre;
+	}
 
 }

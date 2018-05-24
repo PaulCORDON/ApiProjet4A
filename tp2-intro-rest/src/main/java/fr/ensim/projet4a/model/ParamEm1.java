@@ -1,6 +1,11 @@
 package fr.ensim.projet4a.model;
 
 public class ParamEm1 extends ParamMath{
+	/**
+	 * nom du parametre donner par le prof
+	 */
+	public String nom;
+	
 	private int nbBornes;
     /**
      * Nombre de bornes
@@ -11,7 +16,7 @@ public class ParamEm1 extends ParamMath{
      * Nombre de question
      */
 
-    /*TODO modifier pour l'associer à ordre d'apparition,
+    /*TODO modifier pour l'associer ï¿½ ordre d'apparition,
         calcul apparait disparait puis borne apparait
         OU
         bornes apparaissent disparaissent puis calcul apparait
@@ -23,7 +28,7 @@ public class ParamEm1 extends ParamMath{
 
     private long tempsRestantApparant;
     /**
-     * temps pendant lequel le premier element affiché reste apparant dans le cas ou il disparait
+     * temps pendant lequel le premier element affichï¿½ reste apparant dans le cas ou il disparait
      */
 
     private Boolean ordreApparition;
@@ -33,21 +38,21 @@ public class ParamEm1 extends ParamMath{
 
     private Boolean borneSelectionnable;
     /**
-     * Vrai : la borne peut etre le resultat où il faut cliquer, Faux : les bornes ne seront jamais egales aux resultats
+     * Vrai : la borne peut etre le resultat oï¿½ il faut cliquer, Faux : les bornes ne seront jamais egales aux resultats
      */
 
     private Boolean borneEqualsOp;
     /**
-     * Vrai : une bornes est toujours egale à un opérande à +/- distance , Faux : les bornes sont aléatoires
+     * Vrai : une bornes est toujours egale ï¿½ un opï¿½rande ï¿½ +/- distance , Faux : les bornes sont alï¿½atoires
      */
-    //TODO paramètre distance entre borne et opérande dans le cas où une borne doit etre proche d'un opérande
+    //TODO paramï¿½tre distance entre borne et opï¿½rande dans le cas oï¿½ une borne doit etre proche d'un opï¿½rande
 
     private int valMax;
 
     /**
-     * Valeur maximale présente dans l'exercice
+     * Valeur maximale prï¿½sente dans l'exercice
      */
-    //TODO ajouter valMin, valeur minimum présente dans l'exercice
+    //TODO ajouter valMin, valeur minimum prï¿½sente dans l'exercice
 
     private boolean frise;
 
@@ -57,7 +62,7 @@ public class ParamEm1 extends ParamMath{
 
     public ParamEm1()
     /**
-     * Constructeur de paramètres par défault
+     * Constructeur de paramï¿½tres par dï¿½fault
      */
     {
         super();
@@ -72,12 +77,13 @@ public class ParamEm1 extends ParamMath{
         frise = true;
     }
 
-    public ParamEm1(boolean f, Long t, Boolean p, Boolean[] o, int nbb, int nbq, Boolean d, long tra, Boolean oa, Boolean bs, Boolean beo, int vm)
+    public ParamEm1(String nom, boolean f, Long t, Boolean p, Boolean[] o, int nbb, int nbq, Boolean d, long tra, Boolean oa, Boolean bs, Boolean beo, int vm)
     /**
-     * Constructeur de paramètres personalisés
+     * Constructeur de paramï¿½tres personalisï¿½s
      */
     {
         super(t, p, o);
+        this.nom=nom;
         frise = f;
         nbBornes = nbb;
         nbQuestions = nbq;

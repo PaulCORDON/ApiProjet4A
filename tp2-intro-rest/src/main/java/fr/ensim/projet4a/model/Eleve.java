@@ -1,5 +1,7 @@
 package fr.ensim.projet4a.model;
 import java.sql.Date;
+import java.util.ArrayList;
+
 import javax.validation.constraints.NotEmpty;
 //@JsonIgnoreProperties(value = { "id" })
 
@@ -12,11 +14,14 @@ public class Eleve {
 	public Eleve() {
 		super();
 	}
+	
 	@NotEmpty
 	private String nomPrenom;
 	private Date dateDeNaissance;
 	private int classeId;
 	private String classeName;
+	private ArrayList<Competence> listeCompetence;
+	
 	
 	public String getClasseName() {
 		return classeName;
@@ -34,6 +39,12 @@ public class Eleve {
 		this.nomPrenom = nomPrenom;
 		this.dateDeNaissance = dateDeNaissance;
 		this.classeName=classeName;
+	}
+	public Eleve( String nomPrenom, Date dateDeNaissance,String classeName,int classeId) {
+		this.nomPrenom = nomPrenom;
+		this.dateDeNaissance = dateDeNaissance;
+		this.classeName=classeName;
+		this.classeId=classeId;
 	}
 	public String getNomPrenom() {
 		return nomPrenom;

@@ -8,9 +8,11 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,6 +20,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import database.DBService;
 import fr.ensim.projet4a.model.Classe;
 import fr.ensim.projet4a.model.Eleve;
+import fr.ensim.projet4a.model.ParamEl1;
+import fr.ensim.projet4a.model.ParamEm1;
+import fr.ensim.projet4a.model.ParamEm2;
 
 @CrossOrigin(origins = "*", maxAge = 0)
 @RestController
@@ -28,7 +33,16 @@ public class ExampleRestController {
 		/*
 		 * Toutes les actions disponibles pour gérer les élèves;
 		 */	
-		
+		/**
+		 * Récupère l'éleve grace à son nomprenom
+		 * @param nomprenom
+		 * @return l'élève
+		 */
+		@GetMapping("/classe/{nom}/eleve/{nomprenom}")
+		public ArrayList<Eleve> getEleve(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+			return DBService.getEleveFromDB(nomprenom,nom);
+		}
+
 		/**
 		 * Création d'un élève 
 		 * @param eleve
@@ -37,66 +51,35 @@ public class ExampleRestController {
 		@PostMapping("/eleve")
 		public ResponseEntity<Eleve> postEleve(@RequestBody @Valid Eleve eleve) {
 			// URI de localisation de la ressource
-			System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{nomprenom,dateDeNaissance,classeName}").buildAndExpand(eleve).toUri();
 			DBService.addEleveToDB(eleve.getNomPrenom(), eleve.getDateDeNaissance(),eleve.getClasseName());
 			// réponse 202 avec la localisation et la ressource créée
 			return ResponseEntity.created(location).body(eleve);
 		}	
-		
-	
-		
-//		/**
-//		 * Récupère l'éleve grace à son nomprenom
-//		 * @param nomprenom
-//		 * @return l'élève
-//		 */
-//		@GetMapping("/eleve/{nomprenom}")
-//		public ResponseEntity<ArrayList<Eleve>> getEquipe(@PathVariable @NotNull String nomprenom) {
-//			return ResponseEntity.ok( DBService.getEleveFromDB(nomprenom));
-//		}	
-		
-//		/**
-//		 * Supprime l'éleve grace à son ID
-//		 * @param id
-//		 * @return
-//		 */
-//		@DeleteMapping("/eleve/{id}")
-//		public ResponseEntity<Eleve> deleteEquipe(@PathVariable @NotNull Integer id) {
-//			if (fakeDb.containsKey(id)) {
-//				fakeDb.remove(id);
-//				return ResponseEntity.noContent().build();
-//			}
-//
-//			return ResponseEntity.notFound().build();
-//		}
-//		
+				
 		/**
-		 * Modidie l'éleve grace à son ID
+		 * Supprime l'éleve grace à son ID
 		 * @param id
-		 * @param eleve
 		 * @return
 		 */
-//		@PutMapping("/eleve/{id}")
-//		public ResponseEntity<Void> deleteEquipe(@PathVariable @NotNull Integer id, @RequestBody @Valid Eleve eleve) {
-//			if (fakeDb.containsKey(id)) {
-//				// replace
-//				eleve.setID(id);
-//				fakeDb.put(id, eleve);
-//
-//				return ResponseEntity.ok().build();
-//			} else {
-//				// affectation d'un id et persistance
-//				eleve.setID(fakeSeq.incrementAndGet());
-//				fakeDb.put(eleve.getID(), eleve);
-//
-//				// URI de localisation de la ressource
-//				URI location = ServletUriComponentsBuilder.fromCurrentRequest().build(eleve.getID());
-//
-//				// réponse 202 avec la localisation et la ressource créée
-//				return ResponseEntity.created(location).build();
-//			}
-//		}	
+		@DeleteMapping("/classe/{nom}/eleve/{nomPrenom}")
+		public void deleteEleve(@PathVariable @NotNull String nomPrenom,@PathVariable @NotNull String nom) {
+			DBService.deleteEleveFromDB(nomPrenom,nom);		
+		}
+				
+		/**
+		 * Modidie l'éleve grace à son nomPrenom et le nom de sa classe
+		 * @param nomPrenom de l'élève 
+		 * @param nom de sa classe
+		 * @return l'élève modifié
+		 */
+		@PutMapping("/classe/{nom}/eleve/{nomPrenom}")
+		public void updateEleve(@PathVariable @NotNull String nomPrenom, @PathVariable @NotNull String nom,@RequestBody @Valid Eleve eleve) {
+			ServletUriComponentsBuilder.fromCurrentRequest().path("/{nomprenom,dateDeNaissance,classeName}").buildAndExpand(eleve).toUri();
+			System.out.println(""+eleve.getNomPrenom()+eleve.getClasseName()+eleve.getDateDeNaissance().toString());
+			DBService.updateEleveFromDB(nomPrenom,nom,eleve);			
+		}	
+		
 		
 		/*
 		 * Toutes les actions disponible pour gérer les classes;
@@ -124,8 +107,7 @@ public class ExampleRestController {
 		 */
 		@GetMapping("/classe/{nom}")
 		public Classe getClasse(@PathVariable @NotNull String nom) {
-			Classe cl=DBService.getClasseFromDB(nom);
-			return cl;
+			return DBService.getClasseFromDB(nom);
 		}	
 		
 		/**
@@ -137,67 +119,72 @@ public class ExampleRestController {
 			return DBService.getAllClasseFromDB();
 		}	
 
+		/**
+		 * Supprime une classe grace à son nom
+		 * @param id
+		 * @return
+		 */
+		@DeleteMapping("/classe/{nom}")
+		public void deleteClasse(@PathVariable @NotNull String nom) {
+			DBService.deleteClasseFromDB(nom);		
+		}
 		
+		/*
+		 * Toutes les actions disponible pour gérer les Parametres;
+		 */	
+		/**
+		 * Récupère tous les Parametre de l'exercice 1 de calcul
+		 * @return tous les Parametre de l'exercice 1 de calcul
+		 */
+		@GetMapping("/paramEm1")
+		public ArrayList<ParamEm1> getAllParamEm1(){	
+			
+			return DBService.getAllParamEm1FromDB();
+		}
+		/**
+		 * Récupère tous les Parametre de l'exercice 1 de calcul
+		 * @return tous les Parametre de l'exercice 1 de calcul
+		 */
+		@GetMapping("/paramEm2")
+		public ArrayList<ParamEm2> getAllParamEm2(){	
+			
+			return DBService.getAllParamEm2FromDB();
+		}
+		/**
+		 * Récupère tous les Parametre de l'exercice 1 de lecture
+		 * @return tous les Parametre de l'exercice 1 de lecture
+		 */
+		@GetMapping("/paramEl1")
+		public ArrayList<ParamEl1> getAllParamEl1(){	
+			
+			return DBService.getAllParamEl1FromDB();
+		}
 		
-		
-		
-
-//		/**
-//		 * Récupère l'éleve grace à son ID
-//		 * @param id
-//		 * @return l'élève
-//		 */
-//		@GetMapping("/eleve/{id}")
-//		public ResponseEntity<Eleve> getEquipe(@PathVariable @NotNull Integer id) {
-//			if (fakeDb.containsKey(id)) {
-//				return ResponseEntity.ok(fakeDb.get(id));
-//			}
-//
-//			return ResponseEntity.notFound().build();
-//		}		
-//		
-//		/**
-//		 * Supprime l'éleve grace à son ID
-//		 * @param id
-//		 * @return
-//		 */
-//		@DeleteMapping("/eleve/{id}")
-//		public ResponseEntity<Eleve> deleteEquipe(@PathVariable @NotNull Integer id) {
-//			if (fakeDb.containsKey(id)) {
-//				fakeDb.remove(id);
-//				return ResponseEntity.noContent().build();
-//			}
-//
-//			return ResponseEntity.notFound().build();
-//		}
-//		
-//		/**
-//		 * Modidie l'éleve grace à son ID
-//		 * @param id
-//		 * @param eleve
-//		 * @return
-//		 */
-//		@PutMapping("/eleve/{id}")
-//		public ResponseEntity<Void> deleteEquipe(@PathVariable @NotNull Integer id, @RequestBody @Valid Eleve eleve) {
-//			if (fakeDb.containsKey(id)) {
-//				// replace
-//				eleve.setID(id);
-//				fakeDb.put(id, eleve);
-//
-//				return ResponseEntity.ok().build();
-//			} else {
-//				// affectation d'un id et persistance
-//				eleve.setID(fakeSeq.incrementAndGet());
-//				fakeDb.put(eleve.getID(), eleve);
-//
-//				// URI de localisation de la ressource
-//				URI location = ServletUriComponentsBuilder.fromCurrentRequest().build(eleve.getID());
-//
-//				// réponse 202 avec la localisation et la ressource créée
-//				return ResponseEntity.created(location).build();
-//			}
-//		}	
-//		
-//		
-
+		/** Récupère les parametres mis sur la tablette d'un eleve d'une classe
+		 * @param nomprenom
+		 * @param nom
+		 * @return paramem1
+		 */
+		@GetMapping("/classe/{nom}/eleve/{nomprenom}/paramEm1")
+		public ArrayList<ParamEm1> getParamEm1(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+			return DBService.getEleveParamEm1FromBD(nomprenom, nom);
+		}
+		/** Récupère les parametres mis sur la tablette d'un eleve d'une classe
+		 * @param nomprenom
+		 * @param nom
+		 * @return paramem2
+		 */
+		@GetMapping("/classe/{nom}/eleve/{nomprenom}/paramEm2")
+		public ArrayList<ParamEm2> getParamEm2(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+			return DBService.getEleveParamEm2FromBD(nomprenom, nom);
+		}
+		/** Récupère les parametres mis sur la tablette d'un eleve d'une classe
+		 * @param nomprenom
+		 * @param nom
+		 * @return paramel1
+		 */
+		@GetMapping("/classe/{nom}/eleve/{nomprenom}/paramEl1")
+		public ArrayList<ParamEl1> getParamEl1(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+			return DBService.getEleveParamEl1FromBD(nomprenom, nom);
+		}
 }

@@ -7,7 +7,14 @@ public class Classe {
 	
 	private String nom;	
 	private ArrayList<Eleve> listeEleve;
+	private int id;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public Classe(String nom, ArrayList<Eleve> listeEleve) {
 		this.nom = nom;
 		this.listeEleve = new ArrayList<Eleve>();

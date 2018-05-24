@@ -5,7 +5,7 @@
 - https://www.phpmyadmin.net
 -
 - Hôte : 127.0.0.1:3306
-- Généré le :  sam. 19 mai 2018 à 14:13
+- Généré le :  jeu. 24 mai 2018 à 09:51
 - Version du serveur :  5.7.21
 - Version de PHP :  5.6.35
 -->
@@ -22,16 +22,110 @@
                   `nom` varchar(50) NOT NULL,
                   PRIMARY KEY (`id`),
                   UNIQUE KEY `nom` (`nom`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+                ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="competence">
+                CREATE TABLE `competence` (
+                  `idCompetence` int(11) NOT NULL AUTO_INCREMENT,
+                  `nomCompetence` varchar(100) NOT NULL,
+                  PRIMARY KEY (`idCompetence`),
+                  UNIQUE KEY `nomCompetence` (`nomCompetence`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
             </pma:table>
             <pma:table name="eleve">
                 CREATE TABLE `eleve` (
                   `nomPrenom` varchar(50) NOT NULL,
                   `dateDeNaissance` date NOT NULL,
                   `classeId` int(11) NOT NULL,
-                  PRIMARY KEY (`nomPrenom`,`dateDeNaissance`),
+                  `idEleve` int(11) NOT NULL AUTO_INCREMENT,
+                  PRIMARY KEY (`idEleve`),
+                  UNIQUE KEY `nomPrenom` (`nomPrenom`,`dateDeNaissance`,`classeId`),
                   KEY `classeId` (`classeId`),
                   CONSTRAINT `eleve_ibfk_1` FOREIGN KEY (`classeId`) REFERENCES `classe` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="paramel1">
+                CREATE TABLE `paramel1` (
+                  `nbEnonce` int(11) NOT NULL,
+                  `tempsApparution` double NOT NULL,
+                  `nbApparition` int(11) NOT NULL,
+                  `multipleApparution` tinyint(1) NOT NULL,
+                  `nbAparitionSimultanee` int(11) NOT NULL,
+                  `enonceDisparait` tinyint(1) NOT NULL,
+                  `tempsEnonce` double NOT NULL,
+                  `idParamEl1` int(11) NOT NULL AUTO_INCREMENT,
+                  PRIMARY KEY (`idParamEl1`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="parameleve">
+                CREATE TABLE `parameleve` (
+                  `idEleve` int(11) NOT NULL,
+                  `idParamEm1` int(11) NOT NULL,
+                  `idParamEm2` int(11) NOT NULL,
+                  `idParamEl1` int(11) NOT NULL,
+                  KEY `idEleve` (`idEleve`),
+                  KEY `idParamEm1` (`idParamEm1`),
+                  KEY `idParamEm2` (`idParamEm2`),
+                  KEY `idParamEl1` (`idParamEl1`),
+                  CONSTRAINT `parameleve_ibfk_1` FOREIGN KEY (`idEleve`) REFERENCES `eleve` (`idEleve`),
+                  CONSTRAINT `parameleve_ibfk_2` FOREIGN KEY (`idParamEm1`) REFERENCES `paramem1` (`idParamEm1`),
+                  CONSTRAINT `parameleve_ibfk_3` FOREIGN KEY (`idParamEm2`) REFERENCES `paramem2` (`idParamEm2`),
+                  CONSTRAINT `parameleve_ibfk_4` FOREIGN KEY (`idParamEl1`) REFERENCES `paramel1` (`idParamEl1`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="paramem1">
+                CREATE TABLE `paramem1` (
+                  `nbBornes` int(11) NOT NULL,
+                  `nbQuestions` int(11) NOT NULL,
+                  `disparition` tinyint(1) NOT NULL,
+                  `tempsRestantApparant` double NOT NULL,
+                  `ordreApparition` tinyint(1) NOT NULL,
+                  `borneSelectionnable` tinyint(1) NOT NULL,
+                  `borneEqualsOp` tinyint(1) NOT NULL,
+                  `valMax` int(11) NOT NULL,
+                  `frise` tinyint(1) NOT NULL,
+                  `idParamEm1` int(11) NOT NULL AUTO_INCREMENT,
+                  PRIMARY KEY (`idParamEm1`),
+                  KEY `idParamEm1` (`idParamEm1`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="paramem2">
+                CREATE TABLE `paramem2` (
+                  `typeRep` int(11) NOT NULL,
+                  `nbCalcul` int(11) NOT NULL,
+                  `valMaxOperande` int(11) NOT NULL,
+                  `nombrePair` tinyint(1) NOT NULL,
+                  `nombreImpair` tinyint(1) NOT NULL,
+                  `typeNombre` int(11) NOT NULL,
+                  `repDeuxBornes` tinyint(1) NOT NULL,
+                  `repQuatreBornes` tinyint(1) NOT NULL,
+                  `repPaveNum` tinyint(1) NOT NULL,
+                  `idParamEm2` int(11) NOT NULL AUTO_INCREMENT,
+                  PRIMARY KEY (`idParamEm2`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="souscompetence">
+                CREATE TABLE `souscompetence` (
+                  `idSousCompetence` int(11) NOT NULL AUTO_INCREMENT,
+                  `nomSousCompetence` varchar(100) NOT NULL,
+                  `descriptionSousCompetence` varchar(1000) NOT NULL,
+                  `idCompetence` int(11) NOT NULL,
+                  PRIMARY KEY (`idSousCompetence`),
+                  KEY `idCompetence` (`idCompetence`),
+                  CONSTRAINT `souscompetence_ibfk_1` FOREIGN KEY (`idCompetence`) REFERENCES `competence` (`idCompetence`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="souscompetenceeleve">
+                CREATE TABLE `souscompetenceeleve` (
+                  `idEleve` int(11) NOT NULL,
+                  `idSousCompetence` int(11) NOT NULL,
+                  `progression` float NOT NULL,
+                  `nbTest` int(11) NOT NULL,
+                  PRIMARY KEY (`idEleve`,`idSousCompetence`),
+                  KEY `idEleve` (`idEleve`,`idSousCompetence`),
+                  KEY `idSousCompetence` (`idSousCompetence`),
+                  CONSTRAINT `souscompetenceeleve_ibfk_1` FOREIGN KEY (`idEleve`) REFERENCES `eleve` (`idEleve`),
+                  CONSTRAINT `souscompetenceeleve_ibfk_2` FOREIGN KEY (`idSousCompetence`) REFERENCES `souscompetence` (`idSousCompetence`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
             </pma:table>
         </pma:database>
@@ -43,18 +137,242 @@
     <database name="projet4a">
         <!-- Table classe -->
         <table name="classe">
-            <column name="id">15</column>
-            <column name="nom">Classe Verte</column>
+            <column name="id">33</column>
+            <column name="nom">la classe</column>
         </table>
-        <table name="classe">
-            <column name="id">14</column>
-            <column name="nom">classeA</column>
+        <!-- Table competence -->
+        <table name="competence">
+            <column name="idCompetence">1</column>
+            <column name="nomCompetence">Table de 1</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">10</column>
+            <column name="nomCompetence">Table de 10</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">2</column>
+            <column name="nomCompetence">Table de 2</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">3</column>
+            <column name="nomCompetence">Table de 3</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">4</column>
+            <column name="nomCompetence">Table de 4</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">5</column>
+            <column name="nomCompetence">Table de 5</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">6</column>
+            <column name="nomCompetence">Table de 6</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">7</column>
+            <column name="nomCompetence">Table de 7</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">8</column>
+            <column name="nomCompetence">Table de 8</column>
+        </table>
+        <table name="competence">
+            <column name="idCompetence">9</column>
+            <column name="nomCompetence">Table de 9</column>
         </table>
         <!-- Table eleve -->
         <table name="eleve">
-            <column name="nomPrenom">Cordon Paul</column>
-            <column name="dateDeNaissance">1996-10-09</column>
-            <column name="classeId">15</column>
+            <column name="nomPrenom">Renard Dylan</column>
+            <column name="dateDeNaissance">1996-04-08</column>
+            <column name="classeId">33</column>
+            <column name="idEleve">11</column>
         </table>
+        <!-- Table paramel1 -->
+        <!-- Table parameleve -->
+        <!-- Table paramem1 -->
+        <!-- Table paramem2 -->
+        <!-- Table souscompetence -->
+        <table name="souscompetence">
+            <column name="idSousCompetence">1</column>
+            <column name="nomSousCompetence">1 fois 1</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 1</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">2</column>
+            <column name="nomSousCompetence">1 fois 2</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 2</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">3</column>
+            <column name="nomSousCompetence">1 fois 3</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 3</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">4</column>
+            <column name="nomSousCompetence">1 fois 4</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 4</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">5</column>
+            <column name="nomSousCompetence">1 fois 5</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 5</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">6</column>
+            <column name="nomSousCompetence">1 fois 6</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 6</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">7</column>
+            <column name="nomSousCompetence">1 fois 7</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 7</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">8</column>
+            <column name="nomSousCompetence">1 fois 8</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 8</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">9</column>
+            <column name="nomSousCompetence">1 fois 9</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 9</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">10</column>
+            <column name="nomSousCompetence">1 fois 10</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 1 par 10</column>
+            <column name="idCompetence">1</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">11</column>
+            <column name="nomSousCompetence">2 fois 1</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 1</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">12</column>
+            <column name="nomSousCompetence">2 fois 2</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 2</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">13</column>
+            <column name="nomSousCompetence">2 fois 3</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 3</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">14</column>
+            <column name="nomSousCompetence">2 fois 4</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 4</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">15</column>
+            <column name="nomSousCompetence">2 fois 5</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 5</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">16</column>
+            <column name="nomSousCompetence">2 fois 6</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 6</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">17</column>
+            <column name="nomSousCompetence">2 fois 7</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 7</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">18</column>
+            <column name="nomSousCompetence">2 fois 8</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 8</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">19</column>
+            <column name="nomSousCompetence">2 fois 9</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 9</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">20</column>
+            <column name="nomSousCompetence">2 fois 10</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 2 par 10</column>
+            <column name="idCompetence">2</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">21</column>
+            <column name="nomSousCompetence">3 fois 1</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 1</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">22</column>
+            <column name="nomSousCompetence">3 fois 2</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 2</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">23</column>
+            <column name="nomSousCompetence">3 fois 3</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 3</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">24</column>
+            <column name="nomSousCompetence">3 fois 4</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 4</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">25</column>
+            <column name="nomSousCompetence">3 fois 5</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 5</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">26</column>
+            <column name="nomSousCompetence">3 fois 6</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 6</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">27</column>
+            <column name="nomSousCompetence">3 fois 7</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 7</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">28</column>
+            <column name="nomSousCompetence">3 fois 8</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 8</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">29</column>
+            <column name="nomSousCompetence">3 fois 9</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 9</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <table name="souscompetence">
+            <column name="idSousCompetence">30</column>
+            <column name="nomSousCompetence">3 fois 10</column>
+            <column name="descriptionSousCompetence">Maitrise de la multiplication de 3 par 10</column>
+            <column name="idCompetence">3</column>
+        </table>
+        <!-- Table souscompetenceeleve -->
     </database>
 </pma_xml_export>
