@@ -23,6 +23,7 @@ import fr.ensim.projet4a.model.Eleve;
 import fr.ensim.projet4a.model.ParamEl1;
 import fr.ensim.projet4a.model.ParamEm1;
 import fr.ensim.projet4a.model.ParamEm2;
+import fr.ensim.projet4a.model.SousCompetence;
 
 @CrossOrigin(origins = "*", maxAge = 0)
 @RestController
@@ -187,4 +188,54 @@ public class ExampleRestController {
 		public ArrayList<ParamEl1> getParamEl1(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
 			return DBService.getEleveParamEl1FromBD(nomprenom, nom);
 		}
+		/** Ajoute les parametres saisis par le prof
+		 */
+		@PostMapping("/paramEl1")
+		public ResponseEntity<ParamEl1> postParamEl1(@RequestBody @Valid ParamEl1 param) {
+			
+			// URI de localisation de la ressource
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{enonceDisparait,multipleApparution,nbApparition,tempsApparution,nbEnonce,nbAparitionSimultanee}").buildAndExpand(param).toUri();
+			
+			DBService.addParamEl1ToDB(param);
+			// réponse 202 avec la localisation et la ressource créée
+			return ResponseEntity.created(location).body(param);
+		}
+		/** Ajoute les parametres saisis par le prof
+		 */
+		@PostMapping("/paramEm1")
+		public ResponseEntity<ParamEm1> postParamEm1(@RequestBody @Valid ParamEm1 param) {
+			
+			// URI de localisation de la ressource
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{enonceDisparait,multipleApparution,nbApparition,tempsApparution,nbEnonce,nbAparitionSimultanee}").buildAndExpand(param).toUri();
+			
+			DBService.addParamEm1ToDB(param);
+			// réponse 202 avec la localisation et la ressource créée
+			return ResponseEntity.created(location).body(param);
+		}
+		/** Ajoute les parametres saisis par le prof
+		 */
+		@PostMapping("/paramEm2")
+		public ResponseEntity<ParamEm2> postParamEm2(@RequestBody @Valid ParamEm2 param) {
+			
+			// URI de localisation de la ressource
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{enonceDisparait,multipleApparution,nbApparition,tempsApparution,nbEnonce,nbAparitionSimultanee}").buildAndExpand(param).toUri();
+			
+			DBService.addParamEm2ToDB(param);
+			// réponse 202 avec la localisation et la ressource créée
+			return ResponseEntity.created(location).body(param);
+		}
+		
+		
+		
+		/*
+		 * Toutes les actions disponibles pour gérer les SousCompetences;
+		 */	
+		@GetMapping("/classe/{nom}/eleve/{nomprenom}/SousCompetence")
+		public ArrayList<SousCompetence> getSousCompEleve(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+			return DBService.getEleveSousCompetencesFromBD(nomprenom, nom);
+		}
+		
+
+		
+		
 }

@@ -74,6 +74,14 @@ public class ParamEm2 extends ParamMath {
 
 	}
 
+	public Boolean getCalcChaine() {
+		return calcChaine;
+	}
+
+	public void setCalcChaine(Boolean calcChaine) {
+		this.calcChaine = calcChaine;
+	}
+
 	public int gettypeRep() {
 		return typeRep;
 	}

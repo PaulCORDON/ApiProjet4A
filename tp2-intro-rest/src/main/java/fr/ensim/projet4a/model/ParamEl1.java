@@ -99,4 +99,12 @@ public class ParamEl1 {
     public int getNbAparitionSimultanee() {
         return nbAparitionSimultanee;
     }
+
+	public long getTempsEnonce() {
+		return tempsEnonce;
+	}
+
+	public void setTempsEnonce(long tempsEnonce) {
+		this.tempsEnonce = tempsEnonce;
+	}
 }
