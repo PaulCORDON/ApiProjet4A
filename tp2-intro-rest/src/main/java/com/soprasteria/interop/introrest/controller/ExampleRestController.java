@@ -235,7 +235,13 @@ public class ExampleRestController {
 			return DBService.getEleveSousCompetencesFromBD(nomprenom, nom);
 		}
 		
-
+		/*
+		 * Toutes les actions disponibles pour gérer les mots;
+		 */	
+		@GetMapping("/mots/{mot}")
+		public ArrayList<String> getSousCompEleve(@PathVariable @NotNull String mot) {
+			return DBService.getEnonceFromBD(mot);
+		}
 		
 		
 }

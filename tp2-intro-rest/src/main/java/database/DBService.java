@@ -839,15 +839,60 @@ public class DBService {
 		}
 	}
 	public static void addParamEm2ToDB(@Valid ParamEm2 param) {
-			// TODO Auto-generated method stub
 			
 		}
+
+
+	public static ArrayList<String> getEnonceFromBD(@NotNull String mot) {
+		ArrayList<String> el = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT * FROM mots WHERE mot = ?";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			
+			
+			prepareStat.setString(1, mot);
+			
+
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return el;
+		
+	}
+	
+	
 	// Simple log utility
 	private static void log(String string) {
 		System.out.println(string);
 
 	}
-
 	
 
 }
