@@ -189,26 +189,27 @@ public class DBService {
 			}
 		}
 	}
-
+	
+	
+	public static void deleteAllEleveFromClasse(@NotNull String nom) {
+		Classe c=getClasseFromDB(nom);
+		for (Eleve el : c.getListeEleve()) {
+			deleteEleveFromDB(el.getNomPrenom(), nom);		
+		}
+	}
 	/* marche */
 	public static void deleteClasseFromDB(@NotNull String nom) {
-		// TODO Auto-generated method stub
 		Connection conn = null;
-		PreparedStatement prepareStat = null;
 		PreparedStatement prepareStat1 = null;
-
+		deleteAllEleveFromClasse(nom);
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "DELETE FROM eleve WHERE classeId = (SELECT classeId FROM classe WHERE nom = ?)";
 			String getQueryStatement1 = "DELETE FROM classe WHERE nom = ?";
-			prepareStat = conn.prepareStatement(getQueryStatement);
-			prepareStat.setString(1, nom);
 			prepareStat1 = conn.prepareStatement(getQueryStatement1);
 			prepareStat1.setString(1, nom);
 
 			// Execute the Query, and get a java ResultSet
-			prepareStat.execute();
 			prepareStat1.execute();
 
 		} catch (
@@ -216,9 +217,8 @@ public class DBService {
 		SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (prepareStat != null || prepareStat1 != null) {
+			if (prepareStat1 != null) {
 				try {
-					prepareStat.close();
 					prepareStat1.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -1721,9 +1721,162 @@ public class DBService {
 
 	}
 
+	public static ParamEm2 getEleveParamEm2FromBD(@NotNull int id) {
+		ParamEm2 el=null;
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT * FROM parameleve NATURAL JOIN paramem2 WHERE idEleve = ?";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setInt(1, id);
+
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+			// Let's iterate through the java ResultSet
+			while (rs.next()) {
+				Boolean[] tabOpp = { rs.getBoolean("operateur1"), rs.getBoolean("operateur2"),
+						rs.getBoolean("operateur3"), rs.getBoolean("operateur4") };
+				el=new ParamEm2(rs.getString("nom"), rs.getLong("tempsRep"), rs.getBoolean("pairOnly"), tabOpp,
+						rs.getInt("typeRep"), rs.getInt("nbCalcul"), rs.getInt("valMaxOperande"),
+						rs.getBoolean("nombreImpair"), rs.getBoolean("nombrePair"), rs.getBoolean("repDeuxBornes"),
+						rs.getBoolean("repPaveNum"), rs.getBoolean("repQuatreBornes"), rs.getBoolean("calcChaine"));
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return el;
+	}
+
+	public static ParamEm1 getEleveParamEm1FromBD(@NotNull int id) {
+		ParamEm1 el = new ParamEm1();
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT * FROM parameleve NATURAL JOIN paramem1 WHERE idEleve = ?";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setInt(1, id);
+			
+
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+			// Let's iterate through the java ResultSet
+			while (rs.next()) {
+				Boolean[] tabOpp = { rs.getBoolean("operateur1"), rs.getBoolean("operateur2"),
+						rs.getBoolean("operateur3"), rs.getBoolean("operateur4") };
+				el=new ParamEm1(rs.getString("nom"), rs.getBoolean("frise"), rs.getLong("tempsRep"),
+						rs.getBoolean("pairOnly"), tabOpp, rs.getInt("nbBornes"), rs.getInt("nbQuestions"),
+						rs.getBoolean("disparition"), rs.getLong("tempsRestantApparant"),
+						rs.getBoolean("ordreApparition"), rs.getBoolean("borneSelectionnable"),
+						rs.getBoolean("borneEqualsOp"), rs.getInt("valMax"));
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return el;
+
+	}
+
+	public static ParamEl1 getEleveParamEl1FromBD(@NotNull int id) {
+		ParamEl1 el = null;
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT * FROM parameleve NATURAL JOIN paramel1 WHERE idEleve = ?";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setInt(1, id);
+
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+			// Let's iterate through the java ResultSet
+			while (rs.next()) {
+				el=new ParamEl1(rs.getString("nom"), rs.getInt("nbEnonce"), rs.getLong("tempsApparution"),
+						rs.getInt("nbApparition"), rs.getBoolean("multipleApparution"),
+						rs.getBoolean("enonceDisparait"), rs.getInt("nbAparitionSimultanee"));
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return el;
+
+	}
 	// Simple log utility
 	private static void log(String string) {
 		System.out.println(string);
 
 	}
+
+
 }

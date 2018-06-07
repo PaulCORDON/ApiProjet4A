@@ -312,7 +312,30 @@ public class ExampleRestController {
 		public void appliqueParamEl1(@PathVariable @NotNull String nomPrenom, @PathVariable @NotNull String nom,@PathVariable @NotNull String nomParam) {
 			DBService.appliqueParamEl1ToEleve(nomParam,nomPrenom,nom);
 		}
-		
+		/** Récupère les parametres mis sur la tablette d'un eleve d'une classe
+		 * @param id
+		 * @return paramem2
+		 */
+		@GetMapping("/eleve/{id}/paramEm1")
+		public ParamEm1 getParamEm1(@PathVariable @NotNull int id) {
+			return DBService.getEleveParamEm1FromBD(id);
+		}
+		/** Récupère les parametres mis sur la tablette d'un eleve d'une classe
+		 * @param id
+		 * @return paramem2
+		 */
+		@GetMapping("/eleve/{id}/paramEm2")
+		public ParamEm2 getParamEm2(@PathVariable @NotNull int id) {
+			return DBService.getEleveParamEm2FromBD(id);
+		}
+		/** Récupère les parametres mis sur la tablette d'un eleve d'une classe
+		 * @param id
+		 * @return paramem2
+		 */
+		@GetMapping("/eleve/{id}/paramEl1")
+		public ParamEl1 getParamEl1(@PathVariable @NotNull int id) {
+			return DBService.getEleveParamEl1FromBD(id);
+		}
 		/*
 		 * Toutes les actions disponibles pour gérer les SousCompetences;
 		 */	
