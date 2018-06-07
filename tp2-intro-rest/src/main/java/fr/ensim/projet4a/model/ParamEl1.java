@@ -40,11 +40,7 @@ public class ParamEl1 {
     /**
      * Temps au bout duquel l'énoncé disparaitra si elle peut disparaitre.
      */
-    private long tempsEnonce;
-
-    /**
-     * Constructeur bidon de ParamEl1 qui permet de tester facilement l'exercice.
-     */
+  
     public ParamEl1() {
         nbEnonce = 2;
         tempsApparution = new Long(5000);
@@ -100,11 +96,5 @@ public class ParamEl1 {
         return nbAparitionSimultanee;
     }
 
-	public long getTempsEnonce() {
-		return tempsEnonce;
-	}
 
-	public void setTempsEnonce(long tempsEnonce) {
-		this.tempsEnonce = tempsEnonce;
-	}
 }

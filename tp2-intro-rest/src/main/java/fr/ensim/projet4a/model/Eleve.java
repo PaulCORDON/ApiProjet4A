@@ -20,9 +20,22 @@ public class Eleve {
 	private Date dateDeNaissance;
 	private int classeId;
 	private String classeName;
+	private int idEleve;
 	private ArrayList<Competence> listeCompetence;
 	
 	
+	public int getIdEleve() {
+		return idEleve;
+	}
+	public void setIdEleve(int idEleve) {
+		this.idEleve = idEleve;
+	}
+	public ArrayList<Competence> getListeCompetence() {
+		return listeCompetence;
+	}
+	public void setListeCompetence(ArrayList<Competence> listeCompetence) {
+		this.listeCompetence = listeCompetence;
+	}
 	public String getClasseName() {
 		return classeName;
 	}
@@ -40,11 +53,12 @@ public class Eleve {
 		this.dateDeNaissance = dateDeNaissance;
 		this.classeName=classeName;
 	}
-	public Eleve( String nomPrenom, Date dateDeNaissance,String classeName,int classeId) {
+	public Eleve( String nomPrenom, Date dateDeNaissance,String classeName,int classeId,int id) {
 		this.nomPrenom = nomPrenom;
 		this.dateDeNaissance = dateDeNaissance;
 		this.classeName=classeName;
 		this.classeId=classeId;
+		this.idEleve=id;
 	}
 	public String getNomPrenom() {
 		return nomPrenom;

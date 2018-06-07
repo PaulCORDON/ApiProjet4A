@@ -43,7 +43,28 @@ public class ExampleRestController {
 		public ArrayList<Eleve> getEleve(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
 			return DBService.getEleveFromDB(nomprenom,nom);
 		}
-
+		/**
+		 * Récupère tous les eleves qui ont le paramètre param d'apliquer dans l'exercice 1 de calcul
+		 */
+		@GetMapping("/parameleve/paramEm1/{nomparam}")
+		public ArrayList<Eleve> getEleveAvecParamEm1(@PathVariable @NotNull String nomparam) {
+			
+			return DBService.getElevesAvecParamEm1FromDB(nomparam);
+		}
+		/**
+		 * Récupère tous les eleves qui ont le paramètre param d'apliquer dans l'exercice 2 de calcul
+		 */
+		@GetMapping("/parameleve/paramEm2/{nomparam}")
+		public ArrayList<Eleve> getEleveAvecParamEm2(@PathVariable @NotNull String nomparam) {
+			return DBService.getElevesAvecParamEm2FromDB(nomparam);
+		}
+		/**
+		 * Récupère tous les eleves qui ont le paramètre param d'apliquer dans l'exercice 1 de lecture
+		 */
+		@GetMapping("/parameleve/paramEl1/{nomparam}")
+		public ArrayList<Eleve> getEleveAvecParamEl1(@PathVariable @NotNull String nomparam) {
+			return DBService.getElevesAvecParamEl1FromDB(nomparam);
+		}		
 		/**
 		 * Création d'un élève 
 		 * @param eleve
@@ -134,6 +155,49 @@ public class ExampleRestController {
 		 * Toutes les actions disponible pour gérer les Parametres;
 		 */	
 		/**
+		 * Desapplique de parameleve un paramètre de l'exercice 1 de calcul
+		 */
+		@DeleteMapping("/parameleve/paramEm1/{nom}")
+		public void desappliqueParamEm1(@PathVariable @NotNull String nom) {
+			DBService.desappliqueParamEm1FromDB(nom);		
+		}
+		/**
+		 * Desapplique de parameleve un paramètre de l'exercice 1 de calcul
+		 */
+		@DeleteMapping("/parameleve/paramEm2/{nom}")
+		public void desappliqueParamEm2(@PathVariable @NotNull String nom) {
+			DBService.desappliqueParamEm2FromDB(nom);		
+		}
+		/**
+		 * Desapplique de parameleve un paramètre de l'exercice 1 de calcul
+		 */
+		@DeleteMapping("/parameleve/paramEl1/{nom}")
+		public void desappliqueParamEl1(@PathVariable @NotNull String nom) {
+			DBService.desappliqueParamEl1FromDB(nom);		
+		}		
+		/**
+		 * Supprime un paramètre de l'exercice 1 de lecture
+		 */
+		@DeleteMapping("/paramEl1/{nom}")
+		public void supprParamEl1(@PathVariable @NotNull String nom) {
+			DBService.supprParamEl1fromBD(nom);		
+		}
+		/**
+		 * Supprime un paramètre de l'exercice 1 de calcul
+		 */
+		@DeleteMapping("/paramEm1/{nom}")
+		public void supprParamEm1(@PathVariable @NotNull String nom) {
+			DBService.supprParamEm1fromBD(nom);		
+		}
+		/**
+		 * Supprime un paramètre de l'exercice 2 de calcul
+		 */
+		@DeleteMapping("/paramEm2/{nom}")
+		public void supprParamEm2(@PathVariable @NotNull String nom) {
+			DBService.supprParamEm2fromBD(nom);		
+		}
+		
+		/**
 		 * Récupère tous les Parametre de l'exercice 1 de calcul
 		 * @return tous les Parametre de l'exercice 1 de calcul
 		 */
@@ -188,44 +252,66 @@ public class ExampleRestController {
 		public ArrayList<ParamEl1> getParamEl1(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
 			return DBService.getEleveParamEl1FromBD(nomprenom, nom);
 		}
-		/** Ajoute les parametres saisis par le prof
+		/** 
+		 * Ajoute les parametres saisis par le prof
 		 */
 		@PostMapping("/paramEl1")
 		public ResponseEntity<ParamEl1> postParamEl1(@RequestBody @Valid ParamEl1 param) {
 			
 			// URI de localisation de la ressource
-			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{enonceDisparait,multipleApparution,nbApparition,tempsApparution,nbEnonce,nbAparitionSimultanee}").buildAndExpand(param).toUri();
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{nom,enonceDisparait,multipleApparution,nbApparition,tempsApparution,nbEnonce,nbAparitionSimultanee}").buildAndExpand(param).toUri();
 			
 			DBService.addParamEl1ToDB(param);
 			// réponse 202 avec la localisation et la ressource créée
 			return ResponseEntity.created(location).body(param);
 		}
-		/** Ajoute les parametres saisis par le prof
+		/** 
+		 * Ajoute les parametres saisis par le prof
 		 */
 		@PostMapping("/paramEm1")
 		public ResponseEntity<ParamEm1> postParamEm1(@RequestBody @Valid ParamEm1 param) {
 			
 			// URI de localisation de la ressource
-			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{enonceDisparait,multipleApparution,nbApparition,tempsApparution,nbEnonce,nbAparitionSimultanee}").buildAndExpand(param).toUri();
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{nom,nbBornes, nbQuestions,disparition,tempsRestantApparant, ordreApparition, borneSelectionnable, borneEqualsOp, valMax, frise, tempsRep, pairOnly, operateur1, operateur2, operateur3, operateur4}").buildAndExpand(param).toUri();
 			
 			DBService.addParamEm1ToDB(param);
 			// réponse 202 avec la localisation et la ressource créée
 			return ResponseEntity.created(location).body(param);
 		}
-		/** Ajoute les parametres saisis par le prof
+		/** 
+		 * Ajoute les parametres saisis par le prof
 		 */
 		@PostMapping("/paramEm2")
 		public ResponseEntity<ParamEm2> postParamEm2(@RequestBody @Valid ParamEm2 param) {
 			
 			// URI de localisation de la ressource
-			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{enonceDisparait,multipleApparution,nbApparition,tempsApparution,nbEnonce,nbAparitionSimultanee}").buildAndExpand(param).toUri();
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{nom, typeRep, nbCalcul, valMaxOperande,nombrePair, nombreImpair, typeNombre, repDeuxBornes, repQuatreBornes, repPaveNum, tempsRep, pairOnly, operateur1, operateur2, operateur3, operateur4, calcChaine}").buildAndExpand(param).toUri();
 			
 			DBService.addParamEm2ToDB(param);
 			// réponse 202 avec la localisation et la ressource créée
 			return ResponseEntity.created(location).body(param);
 		}
-		
-		
+		/**
+		 * méthode qui applique un paramètre de l'exercice 2 de calcul à un eleve		 * 
+		 */
+		@PostMapping("/paramEm2/{nomParam}/classe/{nom}/eleve/{nomPrenom}")
+		public void appliqueParamEm2(@PathVariable @NotNull String nomPrenom, @PathVariable @NotNull String nom,@PathVariable @NotNull String nomParam) {
+			DBService.appliqueParamEm2ToEleve(nomParam,nomPrenom,nom);			
+		}
+		/**
+		 * méthode qui applique un paramètre de l'exercice 1 de calcul à un eleve		 * 
+		 */
+		@PostMapping("/paramEm1/{nomParam}/classe/{nom}/eleve/{nomPrenom}")
+		public void appliqueParamEm1(@PathVariable @NotNull String nomPrenom, @PathVariable @NotNull String nom,@PathVariable @NotNull String nomParam) {
+			DBService.appliqueParamEm1ToEleve(nomParam,nomPrenom,nom);
+		}
+		/**
+		 * méthode qui applique un paramètre de l'exercice 1 de lecture à un eleve
+		 */
+		@PostMapping("/paramEl1/{nomParam}/classe/{nom}/eleve/{nomPrenom}")
+		public void appliqueParamEl1(@PathVariable @NotNull String nomPrenom, @PathVariable @NotNull String nom,@PathVariable @NotNull String nomParam) {
+			DBService.appliqueParamEl1ToEleve(nomParam,nomPrenom,nom);
+		}
 		
 		/*
 		 * Toutes les actions disponibles pour gérer les SousCompetences;

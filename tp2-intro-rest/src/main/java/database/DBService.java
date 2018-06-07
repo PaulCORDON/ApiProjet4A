@@ -111,11 +111,11 @@ public class DBService {
 
 			while (rs.next()) {
 				cl.setNom(rs.getString("nom"));
-				cl.setId(rs.getInt("id"));
+				cl.setId(rs.getInt("classeId"));
 				cl.setListeEleve(new ArrayList<Eleve>());
 			}
 
-			selectQueryStatement = "SELECT * FROM eleve WHERE classeId = (SELECT id FROM classe WHERE nom = ?)";
+			selectQueryStatement = "SELECT * FROM eleve WHERE classeId = (SELECT classeId FROM classe WHERE nom = ?)";
 			prepareStat1 = conn.prepareStatement(selectQueryStatement);
 			prepareStat1.setString(1, nom);
 			rs = prepareStat1.executeQuery();
@@ -200,7 +200,7 @@ public class DBService {
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "DELETE FROM eleve WHERE classeId = (SELECT id FROM classe WHERE nom = ?)";
+			String getQueryStatement = "DELETE FROM eleve WHERE classeId = (SELECT classeId FROM classe WHERE nom = ?)";
 			String getQueryStatement1 = "DELETE FROM classe WHERE nom = ?";
 			prepareStat = conn.prepareStatement(getQueryStatement);
 			prepareStat.setString(1, nom);
@@ -242,7 +242,7 @@ public class DBService {
 		PreparedStatement prepareStat = null;
 		try {
 			conn = makeJDBCConnection();
-			String insertQueryStatement = "INSERT  INTO  eleve (nomPrenom, dateDeNaissance,classeId) VALUES  (?,?,(SELECT id FROM classe WHERE nom = ?))";
+			String insertQueryStatement = "INSERT  INTO  eleve (nomPrenom, dateDeNaissance,classeId) VALUES  (?,?,(SELECT classeId FROM classe WHERE nom = ?))";
 
 			prepareStat = conn.prepareStatement(insertQueryStatement);
 			prepareStat.setString(1, nomprenom);
@@ -281,7 +281,7 @@ public class DBService {
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "SELECT * FROM eleve WHERE classeId = (SELECT id FROM classe WHERE nom = ?) && nomPrenom = ?";
+			String getQueryStatement = "SELECT * FROM eleve WHERE classeId = (SELECT classeId FROM classe WHERE nom = ?) && nomPrenom = ?";
 			prepareStat = conn.prepareStatement(getQueryStatement);
 			prepareStat.setString(1, nom);
 			prepareStat.setString(2, nomPrenom);
@@ -292,7 +292,7 @@ public class DBService {
 			// Let's iterate through the java ResultSet
 			while (rs.next()) {
 				Eleve ele = new Eleve(rs.getString("nomPrenom"), rs.getDate("dateDeNaissance"), nom,
-						rs.getInt("classeId"));
+						rs.getInt("classeId"), rs.getInt("idEleve"));
 				el.add(ele);
 			}
 
@@ -329,23 +329,28 @@ public class DBService {
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 		PreparedStatement prepareStat1 = null;
+		PreparedStatement prepareStat2 = null;
 
 		try {
 			conn = makeJDBCConnection();
-			// MySQL Select Query Tutorial
-			String getQueryStatement = "DELETE FROM souscompetenceeleve WHERE idEleve = (SELECT idEleve FROM eleve WHERE nomPrenom = ? && classeId=(SELECT id FROM classe WHERE nom = ?))";
-			String getQueryStatement1 = "DELETE FROM eleve WHERE nomPrenom = ? && classeId=(SELECT id FROM classe WHERE nom = ?)";
+			String getQueryStatement2 = "DELETE FROM parameleve WHERE idEleve=(SELECT idEleve FROM eleve WHERE nomPrenom = ?)";
+			prepareStat2 = conn.prepareStatement(getQueryStatement2);
+			prepareStat2.setString(1, nomPrenom);
+			prepareStat2.execute();
+
+			String getQueryStatement = "DELETE FROM souscompetenceeleve WHERE idEleve = (SELECT idEleve FROM eleve WHERE nomPrenom = ? && classeId=(SELECT classeId FROM classe WHERE nom = ?))";
 			prepareStat = conn.prepareStatement(getQueryStatement);
 			prepareStat.setString(1, nomPrenom);
 			prepareStat.setString(2, nom);
+			prepareStat.execute();
+
+			String getQueryStatement1 = "DELETE FROM eleve WHERE nomPrenom = ? && classeId=(SELECT classeId FROM classe WHERE nom = ?)";
 			prepareStat1 = conn.prepareStatement(getQueryStatement1);
 			prepareStat1.setString(1, nomPrenom);
 			prepareStat1.setString(2, nom);
-
-			// Execute the Query, and get a java ResultSet
-			prepareStat.execute();
 			prepareStat1.execute();
 
+			log(nomPrenom + "supprimé de la BDD");
 		} catch (
 
 		SQLException e) {
@@ -355,6 +360,7 @@ public class DBService {
 				try {
 					prepareStat.close();
 					prepareStat1.close();
+					prepareStat2.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -378,7 +384,7 @@ public class DBService {
 			log("coucou");
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "UPDATE eleve SET `nomPrenom`=?,`dateDeNaissance`=?,`classeId`=(SELECT id FROM classe WHERE nom=?) WHERE idEleve = (SELECT idEleve FROM (SELECT * FROM eleve) AS el WHERE nomPrenom = ? && classeId=(SELECT id FROM classe WHERE nom = ?))";
+			String getQueryStatement = "UPDATE eleve SET `nomPrenom`=?,`dateDeNaissance`=?,`classeId`=(SELECT classeId FROM classe WHERE nom=?) WHERE idEleve = (SELECT idEleve FROM (SELECT * FROM eleve) AS el WHERE nomPrenom = ? && classeId=(SELECT classeId FROM classe WHERE nom = ?))";
 			prepareStat = conn.prepareStatement(getQueryStatement);
 			prepareStat.setString(1, elmod.getNomPrenom());
 			prepareStat.setDate(2, elmod.getDateDeNaissance());
@@ -558,7 +564,7 @@ public class DBService {
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "SELECT * FROM eleve NATURAL JOIN paramel1 WHERE classeId = (SELECT id FROM classe WHERE nom = ?) && nomPrenom = ?";
+			String getQueryStatement = "SELECT * FROM eleve NATURAL JOIN paramel1 WHERE classeId = (SELECT classeId FROM classe WHERE nom = ?) && nomPrenom = ?";
 			prepareStat = conn.prepareStatement(getQueryStatement);
 			prepareStat.setString(1, nom);
 			prepareStat.setString(2, nomPrenom);
@@ -609,7 +615,7 @@ public class DBService {
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "SELECT * FROM eleve NATURAL JOIN paramem1 WHERE classeId = (SELECT id FROM classe WHERE nom = ?) && nomPrenom = ?";
+			String getQueryStatement = "SELECT * FROM eleve NATURAL JOIN paramem1 WHERE classeId = (SELECT classeId FROM classe WHERE nom = ?) && nomPrenom = ?";
 			prepareStat = conn.prepareStatement(getQueryStatement);
 			prepareStat.setString(1, nom);
 			prepareStat.setString(2, nomPrenom);
@@ -664,7 +670,7 @@ public class DBService {
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "SELECT * FROM eleve NATURAL JOIN paramem2 WHERE classeId = (SELECT id FROM classe WHERE nom = ?) && nomPrenom = ?";
+			String getQueryStatement = "SELECT * FROM eleve NATURAL JOIN paramem2 WHERE classeId = (SELECT classeId FROM classe WHERE nom = ?) && nomPrenom = ?";
 			prepareStat = conn.prepareStatement(getQueryStatement);
 			prepareStat.setString(1, nom);
 			prepareStat.setString(2, nomPrenom);
@@ -707,7 +713,7 @@ public class DBService {
 
 	}
 
-	/* a tester */
+	/* marche */
 	public static ArrayList<SousCompetence> getEleveSousCompetencesFromBD(@NotNull String nomPrenom,
 			@NotNull String nom) {
 		ArrayList<SousCompetence> tabSousComp = new ArrayList<>();
@@ -717,7 +723,7 @@ public class DBService {
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "SELECT * FROM souscompetenceeleve NATURAL JOIN eleve NATURAL JOIN souscompetence NATURAL JOIN competence WHERE classeId = (SELECT id FROM classe WHERE nom = ?) && nomPrenom = ? ORDER BY `competence`.`nomCompetence` ASC";
+			String getQueryStatement = "SELECT * FROM souscompetenceeleve NATURAL JOIN eleve NATURAL JOIN souscompetence NATURAL JOIN competence WHERE classeId = (SELECT classeId FROM classe WHERE nom = ?) && nomPrenom = ? ORDER BY `competence`.`nomCompetence` ASC";
 			prepareStat = conn.prepareStatement(getQueryStatement);
 			prepareStat.setString(1, nom);
 			prepareStat.setString(2, nomPrenom);
@@ -757,12 +763,13 @@ public class DBService {
 
 	}
 
+	/* marche */
 	public static void addParamEl1ToDB(@Valid ParamEl1 param) {
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 		try {
 			conn = makeJDBCConnection();
-			String insertQueryStatement = "INSERT INTO `paramel1`(`nom`, `nbEnonce`, `tempsApparution`, `nbApparition`, `multipleApparution`, `nbAparitionSimultanee`, `enonceDisparait`, `tempsEnonce`) VALUES (?,?,?,?,?,?,?,?)";
+			String insertQueryStatement = "INSERT INTO `paramel1`(`nom`, `nbEnonce`, `tempsApparution`, `nbApparition`, `multipleApparution`, `nbAparitionSimultanee`, `enonceDisparait`) VALUES (?,?,?,?,?,?,?)";
 
 			prepareStat = conn.prepareStatement(insertQueryStatement);
 			prepareStat.setString(1, param.nom);
@@ -772,7 +779,7 @@ public class DBService {
 			prepareStat.setBoolean(5, param.getMultipleApparution());
 			prepareStat.setInt(6, param.getNbAparitionSimultanee());
 			prepareStat.setBoolean(7, param.getEnonceDisparait());
-			prepareStat.setLong(8, param.getTempsEnonce());
+
 			// execute insert SQL statement
 			prepareStat.executeUpdate();
 			log(param.nom + " added successfully");
@@ -796,8 +803,7 @@ public class DBService {
 		}
 	}
 
-	
-	/*pas fini*/
+	/* marche */
 	public static void addParamEm1ToDB(@Valid ParamEm1 param) {
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
@@ -814,9 +820,14 @@ public class DBService {
 			prepareStat.setBoolean(6, param.getOrdreApparition());
 			prepareStat.setBoolean(7, param.getBorneSelectionnable());
 			prepareStat.setBoolean(8, param.getBorneEqualsOp());
-			prepareStat.setInt(9,param.getValMax());
-			//TODO la suite//
-			
+			prepareStat.setInt(9, param.getValMax());
+			prepareStat.setBoolean(10, param.getFrise());
+			prepareStat.setLong(11, param.getTempsRep());
+			prepareStat.setBoolean(12, param.getPairOnly());
+			prepareStat.setBoolean(13, param.getOperateur()[0]);
+			prepareStat.setBoolean(14, param.getOperateur()[1]);
+			prepareStat.setBoolean(15, param.getOperateur()[2]);
+			prepareStat.setBoolean(16, param.getOperateur()[3]);
 			prepareStat.executeUpdate();
 			log(param.nom + " added successfully");
 		} catch (SQLException e) {
@@ -838,29 +849,90 @@ public class DBService {
 			}
 		}
 	}
+
+	/* marche */
 	public static void addParamEm2ToDB(@Valid ParamEm2 param) {
-			
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		try {
+			conn = makeJDBCConnection();
+			String insertQueryStatement = "INSERT INTO `paramem2`(`nom`, `typeRep`, `nbCalcul`, `valMaxOperande`, `nombrePair`, `nombreImpair`, `typeNombre`, `repDeuxBornes`, `repQuatreBornes`, `repPaveNum`, `tempsRep`, `pairOnly`, `operateur1`, `operateur2`, `operateur3`, `operateur4`, `calcChaine`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+			prepareStat = conn.prepareStatement(insertQueryStatement);
+			prepareStat.setString(1, param.nom);
+			prepareStat.setInt(2, param.gettypeRep());
+			prepareStat.setInt(3, param.getNbCalcul());
+			prepareStat.setInt(4, param.getValMaxOperande());
+			prepareStat.setBoolean(5, param.getNombrePair());
+			prepareStat.setBoolean(6, param.getNombreImpair());
+			prepareStat.setInt(7, param.getTypeNombre());
+			prepareStat.setBoolean(8, param.getRepDeuxBornes());
+			prepareStat.setBoolean(9, param.getRepQuatreBornes());
+			prepareStat.setBoolean(10, param.getRepPaveNum());
+			prepareStat.setLong(11, param.getTempsRep());
+			prepareStat.setBoolean(12, param.getPairOnly());
+			prepareStat.setBoolean(13, param.getOperateur()[0]);
+			prepareStat.setBoolean(14, param.getOperateur()[1]);
+			prepareStat.setBoolean(15, param.getOperateur()[2]);
+			prepareStat.setBoolean(16, param.getOperateur()[3]);
+			prepareStat.setBoolean(17, param.getCalcChaine());
+			prepareStat.executeUpdate();
+			log(param.nom + " added successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+	}
 
-
+	/* marche */
 	public static ArrayList<String> getEnonceFromBD(@NotNull String mot) {
 		ArrayList<String> el = new ArrayList<>();
+		el.add(mot);
+		el.add(getMotCommençantParLesQuatresPremieresLettresDe(mot));
+		el.add(getMotFinissantParLesQuatresPremieresLettresDe(mot));
+		el.add(getMotCommancantEtFinnissantComme(mot));
+		el.add(getMotDeMemeLongueurQue(mot));
+		log(el.toString());
+
+		return el;
+
+	}
+
+	/* marche */
+	private static String getMotCommancantEtFinnissantComme(@NotNull String mot) {
+		String el = "";
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "SELECT * FROM mots WHERE mot = ?";
-			prepareStat = conn.prepareStatement(getQueryStatement);
-			
-			
-			prepareStat.setString(1, mot);
-			
+			String getQueryStatement = "SELECT mot FROM mots WHERE mot LIKE ? && mot !=? && LENGTH(mot)<? LIMIT 1";
 
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, mot.substring(0, 2) + "%" + mot.substring(mot.length() - 2, mot.length()));
+			prepareStat.setString(2, mot);
+			prepareStat.setInt(3, mot.length() + 3);
+			log(prepareStat.toString());
 			// Execute the Query, and get a java ResultSet
 			ResultSet rs = prepareStat.executeQuery();
-
+			while (rs.next()) {
+				el = rs.getString("mot");
+			}
 
 		} catch (
 
@@ -882,17 +954,776 @@ public class DBService {
 				}
 			}
 		}
-
 		return el;
-		
 	}
-	
-	
+
+	/* marche */
+	public static String getMotCommençantParLesQuatresPremieresLettresDe(@NotNull String mot) {
+		String el = "";
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT mot FROM mots WHERE mot LIKE ? && mot != ? && LENGTH(mot)<? LIMIT 1";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, mot.substring(0, 4) + "%");
+			prepareStat.setString(2, mot);
+			prepareStat.setInt(3, mot.length() + 3);
+			log(prepareStat.toString());
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+			while (rs.next()) {
+				el = rs.getString("mot");
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+
+	/* marche */
+	public static String getMotFinissantParLesQuatresPremieresLettresDe(@NotNull String mot) {
+		String el = "";
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT mot FROM mots WHERE mot LIKE ? && mot !=? && LENGTH(mot)<? LIMIT 1";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, "%" + mot.substring(mot.length() - 4, mot.length()));
+			prepareStat.setString(2, mot);
+			prepareStat.setInt(3, mot.length() + 3);
+			log(prepareStat.toString());
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+			while (rs.next()) {
+				el = rs.getString("mot");
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+
+	/* marche */
+	private static String getMotDeMemeLongueurQue(@NotNull String mot) {
+		String el = "";
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT mot FROM mots WHERE mot LIKE ? && mot !=?  && LENGTH(mot)=? LIMIT 1";
+
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, mot.substring(0, 2) + "%" + mot.substring(mot.length() - 1, mot.length()));
+			prepareStat.setString(2, mot);
+			prepareStat.setInt(3, mot.length());
+			log(prepareStat.toString());
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+			while (rs.next()) {
+				el = rs.getString("mot");
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+
+	/* marche */
+	public static boolean verifieSiEleveADesParametres(int id) {
+		Boolean haveParam = false;
+
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT COUNT(*) FROM parameleve WHERE idEleve = ?";
+
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setInt(1, id);
+			ResultSet rs = prepareStat.executeQuery();
+			while (rs.next()) {
+				if (rs.getInt("COUNT(*)") > 0) {
+					haveParam = true;
+				}
+
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return haveParam;
+	}
+
+	/* marche */
+	public static void appliqueParamEm1ToEleve(@Valid String param, @NotNull String nomPrenom, @NotNull String nom) {
+		int idEleve = getEleveFromDB(nomPrenom, nom).get(0).getIdEleve();
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		if (verifieSiEleveADesParametres(idEleve)) {
+			try {
+				conn = makeJDBCConnection();
+				// MySQL Select Query Tutorial
+				String getQueryStatement = "UPDATE parameleve SET `idParamEm1`=(SELECT idParamEm1 FROM paramem1 WHERE nom= ?) WHERE idEleve = ?";
+				prepareStat = conn.prepareStatement(getQueryStatement);
+				prepareStat.setString(1, param);
+				prepareStat.setInt(2, idEleve);
+
+				// Execute the Query, and get a java ResultSet
+				prepareStat.executeUpdate();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (prepareStat != null) {
+					try {
+						prepareStat.close();
+
+					} catch (SQLException e) {
+
+						e.printStackTrace();
+					}
+				}
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+
+						e.printStackTrace();
+					}
+				}
+			}
+		} else {
+			try {
+				conn = makeJDBCConnection();
+
+				String insertQueryStatement = "INSERT INTO `parameleve`(`idEleve`, `idParamEm1`) VALUES (?,(SELECT idParamEm1 FROM paramem1 WHERE nom= ?) )";
+
+				prepareStat = conn.prepareStatement(insertQueryStatement);
+				prepareStat.setInt(1, idEleve);
+				prepareStat.setString(2, param);
+
+				// execute insert SQL statement
+				prepareStat.executeUpdate();
+				log(param + " added successfully");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (prepareStat != null) {
+					try {
+						prepareStat.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	/* marche */
+	public static void appliqueParamEm2ToEleve(@Valid String param, @NotNull String nomPrenom, @NotNull String nom) {
+		int idEleve = getEleveFromDB(nomPrenom, nom).get(0).getIdEleve();
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		if (verifieSiEleveADesParametres(idEleve)) {
+			try {
+				conn = makeJDBCConnection();
+				// MySQL Select Query Tutorial
+				String getQueryStatement = "UPDATE parameleve SET `idParamEm2`=(SELECT idParamEm2 FROM paramem2 WHERE nom= ?) WHERE idEleve = ?";
+				prepareStat = conn.prepareStatement(getQueryStatement);
+				prepareStat.setString(1, param);
+				prepareStat.setInt(2, idEleve);
+
+				// Execute the Query, and get a java ResultSet
+				prepareStat.executeUpdate();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (prepareStat != null) {
+					try {
+						prepareStat.close();
+
+					} catch (SQLException e) {
+
+						e.printStackTrace();
+					}
+				}
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+
+						e.printStackTrace();
+					}
+				}
+			}
+		} else {
+			try {
+				conn = makeJDBCConnection();
+
+				String insertQueryStatement = "INSERT INTO `parameleve`(`idEleve`, `idParamEm2`) VALUES (?,(SELECT idParamEm2 FROM paramem2 WHERE nom= ?) )";
+
+				prepareStat = conn.prepareStatement(insertQueryStatement);
+				prepareStat.setInt(1, idEleve);
+				prepareStat.setString(2, param);
+
+				// execute insert SQL statement
+				prepareStat.executeUpdate();
+				log(param + " added successfully");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (prepareStat != null) {
+					try {
+						prepareStat.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	/* marche */
+	public static void appliqueParamEl1ToEleve(@Valid String param, @NotNull String nomPrenom, @NotNull String nom) {
+		int idEleve = getEleveFromDB(nomPrenom, nom).get(0).getIdEleve();
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		if (verifieSiEleveADesParametres(idEleve)) {
+			try {
+				conn = makeJDBCConnection();
+				// MySQL Select Query Tutorial
+				String getQueryStatement = "UPDATE parameleve SET `idParamEl1`=(SELECT idParamEl1 FROM paramel1 WHERE nom= ?) WHERE idEleve = ?";
+				prepareStat = conn.prepareStatement(getQueryStatement);
+				prepareStat.setString(1, param);
+				prepareStat.setInt(2, idEleve);
+
+				// Execute the Query, and get a java ResultSet
+				prepareStat.executeUpdate();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (prepareStat != null) {
+					try {
+						prepareStat.close();
+
+					} catch (SQLException e) {
+
+						e.printStackTrace();
+					}
+				}
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+
+						e.printStackTrace();
+					}
+				}
+			}
+		} else {
+			try {
+				conn = makeJDBCConnection();
+
+				String insertQueryStatement = "INSERT INTO parameleve (`idEleve`, `idParamEl1`) VALUES (?,(SELECT idParamEl1 FROM paramel1 WHERE nom= ?) )";
+
+				prepareStat = conn.prepareStatement(insertQueryStatement);
+				prepareStat.setInt(1, idEleve);
+				prepareStat.setString(2, param);
+
+				// execute insert SQL statement
+				prepareStat.executeUpdate();
+				log(param + " added successfully");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (prepareStat != null) {
+					try {
+						prepareStat.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	/* marche */
+	public static ArrayList<Eleve> getElevesAvecParamEm1FromDB(@NotNull String nomparam) {
+		ArrayList<Eleve> el = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT * FROM parameleve NATURAL JOIN eleve NATURAL JOIN classe WHERE idParamEm1=(SELECT idParamEm1 FROM paramem1 WHERE nom= ?)";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nomparam);
+
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+			// Let's iterate through the java ResultSet
+			while (rs.next()) {
+				Eleve ele = new Eleve(rs.getString("nomPrenom"), rs.getDate("dateDeNaissance"), rs.getString("nom"),
+						rs.getInt("classeId"), rs.getInt("idEleve"));
+				el.add(ele);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+
+	/* marche */
+	public static ArrayList<Eleve> getElevesAvecParamEm2FromDB(@NotNull String nomparam) {
+		ArrayList<Eleve> el = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT * FROM parameleve NATURAL JOIN eleve NATURAL JOIN classe WHERE idParamEm2=(SELECT idParamEm2 FROM paramem2 WHERE nom= ?)";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nomparam);
+
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+			// Let's iterate through the java ResultSet
+			while (rs.next()) {
+				Eleve ele = new Eleve(rs.getString("nomPrenom"), rs.getDate("dateDeNaissance"), rs.getString("nom"),
+						rs.getInt("classeId"), rs.getInt("idEleve"));
+				el.add(ele);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+
+	/* marche */
+	public static ArrayList<Eleve> getElevesAvecParamEl1FromDB(@NotNull String nomparam) {
+		ArrayList<Eleve> el = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT * FROM parameleve NATURAL JOIN eleve NATURAL JOIN classe WHERE idParamEl1=(SELECT idParamEl1 FROM paramel1 WHERE nom= ?)";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nomparam);
+
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+			// Let's iterate through the java ResultSet
+			while (rs.next()) {
+				Eleve ele = new Eleve(rs.getString("nomPrenom"), rs.getDate("dateDeNaissance"), rs.getString("nom"),
+						rs.getInt("classeId"), rs.getInt("idEleve"));
+				el.add(ele);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+
+	/* marche */
+	public static void desappliqueParamEm1FromDB(@NotNull String nom) {
+
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "UPDATE parameleve SET `idParamEm1`=NULL WHERE idParamEm1=(SELECT idParamEm1 FROM paramem1 WHERE nom= ?)";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nom);
+
+			// Execute the Query, and get a java ResultSet
+			prepareStat.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+
+				} catch (SQLException e) {
+
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/* marche */
+	public static void desappliqueParamEm2FromDB(@NotNull String nom) {
+
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "UPDATE parameleve SET `idParamEm2`=NULL WHERE idParamEm2=(SELECT idParamEm2 FROM paramem2 WHERE nom= ?)";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nom);
+
+			// Execute the Query, and get a java ResultSet
+			prepareStat.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+
+				} catch (SQLException e) {
+
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
+	/* marche */
+	public static void desappliqueParamEl1FromDB(@NotNull String nom) {
+
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "UPDATE parameleve SET `idParamEl1`=NULL WHERE idParamEl1=(SELECT idParamEl1 FROM paramel1 WHERE nom= ?)";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nom);
+
+			// Execute the Query, and get a java ResultSet
+			prepareStat.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+
+				} catch (SQLException e) {
+
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
+	public static void supprParamEl1fromBD(@NotNull String nom) {
+		desappliqueParamEl1FromDB(nom);
+
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "DELETE FROM paramel1 WHERE nom = ?";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nom);
+			prepareStat.execute();
+			log(nom+" a bien été supprimer");
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public static void supprParamEm1fromBD(@NotNull String nom) {
+		desappliqueParamEm1FromDB(nom);
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "DELETE FROM paramem1 WHERE nom = ?";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nom);
+			prepareStat.execute();
+			log(nom+" a bien été supprimer");
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public static void supprParamEm2fromBD(@NotNull String nom) {
+		desappliqueParamEm2FromDB(nom);
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "DELETE FROM paramem2 WHERE nom = ?";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, nom);
+			prepareStat.execute();
+			log(nom+" a bien été supprimer");
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
 	// Simple log utility
 	private static void log(String string) {
 		System.out.println(string);
 
 	}
-	
-
 }
