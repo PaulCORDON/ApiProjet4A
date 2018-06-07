@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 31 mai 2018 à 09:50
+-- Généré le :  jeu. 07 juin 2018 à 10:04
 -- Version du serveur :  5.7.21
 -- Version de PHP :  5.6.35
 
@@ -30,20 +30,23 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `classe`;
 CREATE TABLE IF NOT EXISTS `classe` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `classeId` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`classeId`),
   UNIQUE KEY `nom` (`nom`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `classe`
 --
 
-INSERT INTO `classe` (`id`, `nom`) VALUES
-(35, 'Classe Verte'),
-(33, 'la classe'),
-(37, 'ma classe');
+INSERT INTO `classe` (`classeId`, `nom`) VALUES
+(43, '6e'),
+(39, 'CE1'),
+(40, 'CE2'),
+(41, 'CM1'),
+(42, 'CM2'),
+(38, 'CP');
 
 -- --------------------------------------------------------
 
@@ -90,17 +93,43 @@ CREATE TABLE IF NOT EXISTS `eleve` (
   PRIMARY KEY (`idEleve`),
   UNIQUE KEY `nomPrenom` (`nomPrenom`,`dateDeNaissance`,`classeId`),
   KEY `classeId` (`classeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `eleve`
 --
 
 INSERT INTO `eleve` (`nomPrenom`, `dateDeNaissance`, `classeId`, `idEleve`) VALUES
-('Cordon Paul', '1996-10-09', 33, 14),
-('Jean Dupont', '2001-01-01', 37, 15),
-('Le Mechec Valentin', '1996-04-25', 35, 12),
-('Renard Dylan', '1996-04-08', 33, 11);
+('Akim Mébien', '2000-02-02', 39, 38),
+('Alban DePoisson', '2000-02-02', 39, 40),
+('Ali Gator', '2000-03-01', 39, 39),
+('Amandine Auzor', '2001-04-04', 38, 35),
+('Aude Javel', '1998-06-05', 42, 51),
+('Cécile Enssieux', '1998-05-05', 41, 56),
+('Colette Sterolle', '2000-05-05', 41, 57),
+('Daisy Démalplacé', '2000-02-01', 39, 37),
+('Eddy Donmarcel', '2001-07-06', 41, 58),
+('Eli Coptère', '1999-01-02', 40, 41),
+('Eric Hochet', '2001-05-05', 38, 53),
+('Firmin Petagueule', '1998-04-04', 41, 54),
+('Florentin Paillier', '1995-07-05', 43, 60),
+('Gerard Menvussa', '2001-06-06', 41, 55),
+('Henry Gol', '1999-06-06', 40, 43),
+('Jack Daniels', '2000-01-01', 39, 36),
+('Jack Uzi', '1999-05-05', 40, 42),
+('Jean Dupont', '2001-01-01', 38, 32),
+('Kelly Diote', '1999-12-04', 40, 45),
+('Lara Tatouille', '1999-06-06', 40, 44),
+('Laure Voiretmerci', '2000-12-31', 40, 61),
+('Milène Micoton', '1998-10-05', 42, 46),
+('Paul Cordon', '1996-10-09', 43, 59),
+('Paul Ochon', '2001-03-03', 38, 34),
+('Pierre Rocher', '2001-02-02', 38, 33),
+('Pit za', '1998-07-08', 42, 47),
+('René Kicoul', '1998-02-06', 42, 48),
+('Terry Dicule', '1998-11-04', 42, 49),
+('Thomas Jemalhales', '1998-10-04', 42, 52),
+('Valentin Le Mechec', '1996-04-28', 43, 50);
 
 -- --------------------------------------------------------
 
@@ -119,7 +148,6 @@ CREATE TABLE IF NOT EXISTS `mots` (
 --
 
 INSERT INTO `mots` (`mot`) VALUES
-('?supplanta'),
 ('a'),
 ('à brûle-pourpoint'),
 ('a capella'),
@@ -3963,10 +3991,10 @@ INSERT INTO `mots` (`mot`) VALUES
 ('alita'),
 ('alitai'),
 ('alitait'),
-('alité');
-INSERT INTO `mots` (`mot`) VALUES
+('alité'),
 ('alitée'),
-('alitées'),
+('alitées');
+INSERT INTO `mots` (`mot`) VALUES
 ('alitement'),
 ('aliter'),
 ('alizé'),
@@ -7614,9 +7642,9 @@ INSERT INTO `mots` (`mot`) VALUES
 ('arrêta'),
 ('arrêtai'),
 ('arrêtaient'),
-('arrêtais');
+('arrêtais'),
+('arrêtait');
 INSERT INTO `mots` (`mot`) VALUES
-('arrêtait'),
 ('arrêtâmes'),
 ('arrêtant'),
 ('arrêtassent'),
@@ -11142,7 +11170,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('bandelette'),
 ('bandelettes'),
 ('bandent'),
-('bander'),
 ('bandera'),
 ('banderai'),
 ('banderaient'),
@@ -11406,10 +11433,10 @@ INSERT INTO `mots` (`mot`) VALUES
 ('barbues'),
 ('barbules'),
 ('barbus'),
-('barca');
-INSERT INTO `mots` (`mot`) VALUES
+('barca'),
 ('barcarolle'),
-('barcasse'),
+('barcasse');
+INSERT INTO `mots` (`mot`) VALUES
 ('barcasses'),
 ('barda'),
 ('bardage'),
@@ -13144,9 +13171,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('bistrouille'),
 ('bisulfite'),
 ('bit'),
-('bite'),
 ('bitent'),
-('bites'),
 ('bithynien'),
 ('bithyniens'),
 ('bitoniau'),
@@ -15431,11 +15456,11 @@ INSERT INTO `mots` (`mot`) VALUES
 ('brillante'),
 ('brillantes'),
 ('brillantine'),
-('brillantinée');
-INSERT INTO `mots` (`mot`) VALUES
+('brillantinée'),
 ('brillantinées'),
 ('brillantiner'),
-('brillantinés'),
+('brillantinés');
+INSERT INTO `mots` (`mot`) VALUES
 ('brillants'),
 ('brillât'),
 ('brille'),
@@ -19396,12 +19421,12 @@ INSERT INTO `mots` (`mot`) VALUES
 ('chameaux'),
 ('chamelier'),
 ('chameliers'),
-('chamelle');
-INSERT INTO `mots` (`mot`) VALUES
+('chamelle'),
 ('chamelles'),
 ('chamois'),
 ('chamoisine'),
-('champ'),
+('champ');
+INSERT INTO `mots` (`mot`) VALUES
 ('champ\''),
 ('champagne'),
 ('champagnes'),
@@ -23221,12 +23246,12 @@ INSERT INTO `mots` (`mot`) VALUES
 ('commenta'),
 ('commentai'),
 ('commentaient'),
-('commentaire');
-INSERT INTO `mots` (`mot`) VALUES
+('commentaire'),
 ('commentaires'),
 ('commentais'),
 ('commentait'),
-('commentant'),
+('commentant');
+INSERT INTO `mots` (`mot`) VALUES
 ('commentateur'),
 ('commentateurs'),
 ('commentatrice'),
@@ -24888,9 +24913,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('connaîtrions'),
 ('connaîtrons'),
 ('connaîtront'),
-('connard'),
-('connards'),
-('connasse'),
 ('connasses'),
 ('conne'),
 ('conneau'),
@@ -24964,7 +24986,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('conquistadores'),
 ('conquistadors'),
 ('conquit'),
-('cons'),
 ('consacra'),
 ('consacrai'),
 ('consacraient'),
@@ -26645,15 +26666,15 @@ INSERT INTO `mots` (`mot`) VALUES
 ('coquette'),
 ('coquettement'),
 ('coquetterie'),
-('coquetteries');
-INSERT INTO `mots` (`mot`) VALUES
+('coquetteries'),
 ('coquettes'),
 ('coquillage'),
 ('coquillages'),
 ('coquillard'),
 ('coquillards'),
 ('coquillart'),
-('coquille'),
+('coquille');
+INSERT INTO `mots` (`mot`) VALUES
 ('coquilles'),
 ('coquillettes'),
 ('coquilleux'),
@@ -27272,8 +27293,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('couguars'),
 ('couic'),
 ('couillard'),
-('couille'),
-('couilles'),
 ('couillettes'),
 ('couillon'),
 ('couillonnade'),
@@ -29111,7 +29130,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('cuivrées'),
 ('cuivres'),
 ('cuivreux'),
-('cul'),
 ('cul-bénit'),
 ('cul-blanc'),
 ('cul-cul'),
@@ -30553,8 +30571,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('décembre'),
 ('décembres'),
 ('décembriste'),
-('décembristes');
-INSERT INTO `mots` (`mot`) VALUES
+('décembristes'),
 ('décemment'),
 ('décence'),
 ('décences'),
@@ -30564,7 +30581,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('décennies'),
 ('décent'),
 ('décente'),
-('décentes'),
+('décentes');
+INSERT INTO `mots` (`mot`) VALUES
 ('décentralisation'),
 ('décentralisé'),
 ('décentralisée'),
@@ -34219,8 +34237,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('déplaisais'),
 ('déplaisait'),
 ('déplaisant'),
-('déplaisante');
-INSERT INTO `mots` (`mot`) VALUES
+('déplaisante'),
 ('déplaisantes'),
 ('déplaisants'),
 ('déplaise'),
@@ -34229,7 +34246,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('déplaisiez'),
 ('déplaisir'),
 ('déplaisirs'),
-('déplaît'),
+('déplaît');
+INSERT INTO `mots` (`mot`) VALUES
 ('déplanque'),
 ('déplantèrent'),
 ('déplantoir'),
@@ -37839,8 +37857,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('dissimulées'),
 ('dissimulent'),
 ('dissimuler'),
-('dissimulera');
-INSERT INTO `mots` (`mot`) VALUES
+('dissimulera'),
 ('dissimuleraient'),
 ('dissimulerais'),
 ('dissimulerait'),
@@ -37848,7 +37865,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('dissimulerons'),
 ('dissimules'),
 ('dissimulez'),
-('dissimuliez'),
+('dissimuliez');
+INSERT INTO `mots` (`mot`) VALUES
 ('dissimulions'),
 ('dissimulons'),
 ('dissipa'),
@@ -38378,7 +38396,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('doigta'),
 ('doigtait'),
 ('doigté'),
-('doigter'),
 ('doigtier'),
 ('doigts'),
 ('dois'),
@@ -41725,8 +41742,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('embarrasserai'),
 ('embarrasseraient'),
 ('embarrassèrent'),
-('embarrasses');
-INSERT INTO `mots` (`mot`) VALUES
+('embarrasses'),
 ('embarrassez'),
 ('embarrassions'),
 ('embarrassons'),
@@ -41737,7 +41753,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('embastillée'),
 ('embastiller'),
 ('embastillés'),
-('embats'),
+('embats');
+INSERT INTO `mots` (`mot`) VALUES
 ('embaucha'),
 ('embauchage'),
 ('embauchaient'),
@@ -43394,11 +43411,9 @@ INSERT INTO `mots` (`mot`) VALUES
 ('enculades'),
 ('enculage'),
 ('enculant'),
-('encule'),
 ('enculée'),
 ('enculées'),
 ('enculent'),
-('enculer'),
 ('enculera'),
 ('enculerais'),
 ('enculerait'),
@@ -45382,8 +45397,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('entreprend'),
 ('entreprendrai'),
 ('entreprendraient'),
-('entreprendrais');
-INSERT INTO `mots` (`mot`) VALUES
+('entreprendrais'),
 ('entreprendrait'),
 ('entreprendras'),
 ('entreprendre'),
@@ -45394,7 +45408,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('entrepreneurs'),
 ('entrepreneuse'),
 ('entrepreneuses'),
-('entreprenez'),
+('entreprenez');
+INSERT INTO `mots` (`mot`) VALUES
 ('entrepreniez'),
 ('entreprenions'),
 ('entreprenne'),
@@ -49225,8 +49240,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('existeriez'),
 ('existerions'),
 ('existerons'),
-('existeront');
-INSERT INTO `mots` (`mot`) VALUES
+('existeront'),
 ('existes'),
 ('existez'),
 ('existiez'),
@@ -49242,7 +49256,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('exogamique'),
 ('exogène'),
 ('exonérait'),
-('exonération'),
+('exonération');
+INSERT INTO `mots` (`mot`) VALUES
 ('exonérées'),
 ('exonérer'),
 ('exonérera'),
@@ -53189,8 +53204,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('foufounes'),
 ('foufounette'),
 ('foufous'),
-('fougasse');
-INSERT INTO `mots` (`mot`) VALUES
+('fougasse'),
 ('fouge'),
 ('fougeraie'),
 ('fougeraies'),
@@ -53206,7 +53220,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('fouie'),
 ('fouies'),
 ('fouilla'),
-('fouillai'),
+('fouillai');
+INSERT INTO `mots` (`mot`) VALUES
 ('fouillaient'),
 ('fouillais'),
 ('fouillait'),
@@ -57213,8 +57228,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('graciés'),
 ('gracieuse'),
 ('gracieusement'),
-('gracieuses');
-INSERT INTO `mots` (`mot`) VALUES
+('gracieuses'),
 ('gracieuseté'),
 ('gracieusetés'),
 ('gracieux'),
@@ -57230,7 +57244,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('grader'),
 ('grades'),
 ('gradient'),
-('gradients'),
+('gradients');
+INSERT INTO `mots` (`mot`) VALUES
 ('gradin'),
 ('gradins'),
 ('graduation'),
@@ -61097,8 +61112,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('ignames'),
 ('ignare'),
 ('ignares'),
-('igné');
-INSERT INTO `mots` (`mot`) VALUES
+('igné'),
 ('ignée'),
 ('ignifuge'),
 ('ignifugeant'),
@@ -61112,7 +61126,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('ignobles'),
 ('ignominie'),
 ('ignominies'),
-('ignominieuse'),
+('ignominieuse');
+INSERT INTO `mots` (`mot`) VALUES
 ('ignominieusement'),
 ('ignominieuses'),
 ('ignominieux'),
@@ -64599,8 +64614,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('insufflent'),
 ('insuffler'),
 ('insufflera'),
-('insula');
-INSERT INTO `mots` (`mot`) VALUES
+('insula'),
 ('insulaire'),
 ('insulaires'),
 ('insularité'),
@@ -64613,7 +64627,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('insultait'),
 ('insultant'),
 ('insultante'),
-('insultantes'),
+('insultantes');
+INSERT INTO `mots` (`mot`) VALUES
 ('insultants'),
 ('insulte'),
 ('insultée'),
@@ -68445,8 +68460,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('légèretés'),
 ('légers'),
 ('leggins'),
-('leghorns');
-INSERT INTO `mots` (`mot`) VALUES
+('leghorns'),
 ('légiférait'),
 ('légifère'),
 ('légiférer'),
@@ -68459,7 +68473,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('législateurs'),
 ('législatif'),
 ('législatifs'),
-('législation'),
+('législation');
+INSERT INTO `mots` (`mot`) VALUES
 ('législative'),
 ('législatives'),
 ('législature'),
@@ -72453,8 +72468,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('maudissez'),
 ('maudissions'),
 ('maudit'),
-('maudite');
-INSERT INTO `mots` (`mot`) VALUES
+('maudite'),
 ('maudites'),
 ('maudits'),
 ('maugréa'),
@@ -72469,7 +72483,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('mauresque'),
 ('mauresques'),
 ('mauricienne'),
-('mauritanienne'),
+('mauritanienne');
+INSERT INTO `mots` (`mot`) VALUES
 ('maurrassien'),
 ('maurrassisme'),
 ('mauser'),
@@ -73310,7 +73325,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('merda'),
 ('merdait'),
 ('merdasse'),
-('merde'),
 ('merdée'),
 ('merdent'),
 ('merder'),
@@ -76335,8 +76349,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('multirisque'),
 ('multiséculaires'),
 ('multitâche'),
-('multitâches');
-INSERT INTO `mots` (`mot`) VALUES
+('multitâches'),
 ('multitude'),
 ('multitudes'),
 ('mungo'),
@@ -76351,7 +76364,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('municipalités'),
 ('municipaux'),
 ('municipe'),
-('municipes'),
+('municipes');
+INSERT INTO `mots` (`mot`) VALUES
 ('munie'),
 ('munies'),
 ('munificence'),
@@ -77734,7 +77748,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('niquedouille'),
 ('niquée'),
 ('niquent'),
-('niquer'),
 ('niquera'),
 ('niquerait'),
 ('niques'),
@@ -80304,8 +80317,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('ouatinées'),
 ('ouatiner'),
 ('oubli'),
-('oublia');
-INSERT INTO `mots` (`mot`) VALUES
+('oublia'),
 ('oubliable'),
 ('oubliai'),
 ('oubliaient'),
@@ -80322,7 +80334,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('oublient'),
 ('oublier'),
 ('oubliera'),
-('oublierai'),
+('oublierai');
+INSERT INTO `mots` (`mot`) VALUES
 ('oublieraient'),
 ('oublierais'),
 ('oublierait'),
@@ -82892,7 +82905,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('pédantesque'),
 ('pédantisme'),
 ('pédants'),
-('pédé'),
 ('pédégé'),
 ('pédéraste'),
 ('pédérastes'),
@@ -84194,8 +84206,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('peson'),
 ('pesons'),
 ('pesos'),
-('pessah');
-INSERT INTO `mots` (`mot`) VALUES
+('pessah'),
 ('pessaire'),
 ('pesse'),
 ('pessimisme'),
@@ -84213,7 +84224,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('pesteuse'),
 ('pestez'),
 ('pesticide'),
-('pesticides'),
+('pesticides');
+INSERT INTO `mots` (`mot`) VALUES
 ('pestiféré'),
 ('pestiférée'),
 ('pestiférées'),
@@ -88075,8 +88087,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('pousserai'),
 ('pousseraient'),
 ('pousserais'),
-('pousserait');
-INSERT INTO `mots` (`mot`) VALUES
+('pousserait'),
 ('pousseras'),
 ('poussèrent'),
 ('pousserez'),
@@ -88092,7 +88103,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('poussez'),
 ('poussier'),
 ('poussière'),
-('poussières'),
+('poussières');
+INSERT INTO `mots` (`mot`) VALUES
 ('poussiéreuse'),
 ('poussiéreuses'),
 ('poussiéreux'),
@@ -91167,7 +91179,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('pustuleuse'),
 ('pustuleux'),
 ('put'),
-('putain'),
 ('putains'),
 ('putanat'),
 ('putasse'),
@@ -91181,7 +91192,6 @@ INSERT INTO `mots` (`mot`) VALUES
 ('putatif'),
 ('putatifs'),
 ('putative'),
-('pute'),
 ('putes'),
 ('putier'),
 ('putois'),
@@ -91699,8 +91709,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('quintette'),
 ('quintettes'),
 ('quinteux'),
-('quintidi');
-INSERT INTO `mots` (`mot`) VALUES
+('quintidi'),
 ('quinto'),
 ('quintolet'),
 ('quinton'),
@@ -91719,7 +91728,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('quiquette'),
 ('quiqui'),
 ('quiscale'),
-('quite'),
+('quite');
+INSERT INTO `mots` (`mot`) VALUES
 ('quitta'),
 ('quittai'),
 ('quittaient'),
@@ -95433,8 +95443,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('récupérateur'),
 ('récupérateurs'),
 ('récupération'),
-('récupérations');
-INSERT INTO `mots` (`mot`) VALUES
+('récupérations'),
 ('récupère'),
 ('récupérée'),
 ('récupérées'),
@@ -95450,7 +95459,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('récupérerons'),
 ('récupéreront'),
 ('récupères'),
-('récupérez'),
+('récupérez');
+INSERT INTO `mots` (`mot`) VALUES
 ('récupériez'),
 ('récupérions'),
 ('récupérons'),
@@ -99148,8 +99158,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('réprima'),
 ('réprimai'),
 ('réprimaient'),
-('réprimais');
-INSERT INTO `mots` (`mot`) VALUES
+('réprimais'),
 ('réprimait'),
 ('réprimâmes'),
 ('réprimanda'),
@@ -99165,7 +99174,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('réprimées'),
 ('réprimer'),
 ('réprimerai'),
-('réprimerait'),
+('réprimerait');
+INSERT INTO `mots` (`mot`) VALUES
 ('réprimèrent'),
 ('réprimerez'),
 ('reprîmes'),
@@ -103007,8 +103017,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('sacrificiels'),
 ('sacrifie'),
 ('sacrifiée'),
-('sacrifiées');
-INSERT INTO `mots` (`mot`) VALUES
+('sacrifiées'),
 ('sacrifient'),
 ('sacrifier'),
 ('sacrifiera'),
@@ -103023,7 +103032,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('sacrifierions'),
 ('sacrifierons'),
 ('sacrifies'),
-('sacrifiez'),
+('sacrifiez');
+INSERT INTO `mots` (`mot`) VALUES
 ('sacrifiiez'),
 ('sacrifions'),
 ('sacrilège'),
@@ -103347,10 +103357,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('salons'),
 ('saloon'),
 ('saloons'),
-('salop'),
-('salopard'),
 ('salopards'),
-('salope'),
 ('salopée'),
 ('salopées'),
 ('salopent'),
@@ -106956,8 +106963,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('songeurs'),
 ('songeuse'),
 ('songeusement'),
-('songeuses');
-INSERT INTO `mots` (`mot`) VALUES
+('songeuses'),
 ('songez'),
 ('songiez'),
 ('songions'),
@@ -106979,7 +106985,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('sonnât'),
 ('sonne'),
 ('sonnée'),
-('sonnées'),
+('sonnées');
+INSERT INTO `mots` (`mot`) VALUES
 ('sonnent'),
 ('sonner'),
 ('sonnera'),
@@ -110640,8 +110647,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('susse'),
 ('sussent'),
 ('sustentation'),
-('sustente');
-INSERT INTO `mots` (`mot`) VALUES
+('sustente'),
 ('sustenter'),
 ('sustentés'),
 ('susu'),
@@ -110662,7 +110668,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('susurrés'),
 ('susvisée'),
 ('sut'),
-('sutémi'),
+('sutémi');
+INSERT INTO `mots` (`mot`) VALUES
 ('sutra'),
 ('suturant'),
 ('suture'),
@@ -114585,8 +114592,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('tranquillisaient'),
 ('tranquillisait'),
 ('tranquillisant'),
-('tranquillisante');
-INSERT INTO `mots` (`mot`) VALUES
+('tranquillisante'),
 ('tranquillisantes'),
 ('tranquillisants'),
 ('tranquillise'),
@@ -114601,7 +114607,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('tranquillités'),
 ('tranquillos'),
 ('trans'),
-('transaction'),
+('transaction');
+INSERT INTO `mots` (`mot`) VALUES
 ('transactionnelle'),
 ('transactions'),
 ('transafricain'),
@@ -118449,8 +118456,7 @@ INSERT INTO `mots` (`mot`) VALUES
 ('veuvages'),
 ('veuve'),
 ('veuves'),
-('veux');
-INSERT INTO `mots` (`mot`) VALUES
+('veux'),
 ('vexa'),
 ('vexai'),
 ('vexait'),
@@ -118473,7 +118479,8 @@ INSERT INTO `mots` (`mot`) VALUES
 ('vexeras'),
 ('vexerez'),
 ('vexerions'),
-('vexes'),
+('vexes');
+INSERT INTO `mots` (`mot`) VALUES
 ('vexez'),
 ('vexons'),
 ('via'),
@@ -120315,17 +120322,18 @@ CREATE TABLE IF NOT EXISTS `paramel1` (
   `multipleApparution` tinyint(1) NOT NULL,
   `nbAparitionSimultanee` int(11) NOT NULL,
   `enonceDisparait` tinyint(1) NOT NULL,
-  `tempsEnonce` double NOT NULL,
   `idParamEl1` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`idParamEl1`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`idParamEl1`),
+  UNIQUE KEY `nom` (`nom`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `paramel1`
 --
 
-INSERT INTO `paramel1` (`nom`, `nbEnonce`, `tempsApparution`, `nbApparition`, `multipleApparution`, `nbAparitionSimultanee`, `enonceDisparait`, `tempsEnonce`, `idParamEl1`) VALUES
-('test', 1, 5000, 20, 1, 5, 1, 2000, 1);
+INSERT INTO `paramel1` (`nom`, `nbEnonce`, `tempsApparution`, `nbApparition`, `multipleApparution`, `nbAparitionSimultanee`, `enonceDisparait`, `idParamEl1`) VALUES
+('CP', 1, 7000, 10, 0, 1, 0, 5),
+('CE1', 1, 7000, 10, 0, 1, 0, 6);
 
 -- --------------------------------------------------------
 
@@ -120336,10 +120344,11 @@ INSERT INTO `paramel1` (`nom`, `nbEnonce`, `tempsApparution`, `nbApparition`, `m
 DROP TABLE IF EXISTS `parameleve`;
 CREATE TABLE IF NOT EXISTS `parameleve` (
   `idEleve` int(11) NOT NULL,
-  `idParamEm1` int(11) NOT NULL,
-  `idParamEm2` int(11) NOT NULL,
-  `idParamEl1` int(11) NOT NULL,
-  PRIMARY KEY (`idEleve`,`idParamEm1`,`idParamEm2`,`idParamEl1`),
+  `idParamEm1` int(11) DEFAULT NULL,
+  `idParamEm2` int(11) DEFAULT NULL,
+  `idParamEl1` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idEleve`),
+  UNIQUE KEY `idEleve` (`idEleve`),
   KEY `idParamEm1` (`idParamEm1`),
   KEY `idParamEm2` (`idParamEm2`),
   KEY `idParamEl1` (`idParamEl1`)
@@ -120350,7 +120359,16 @@ CREATE TABLE IF NOT EXISTS `parameleve` (
 --
 
 INSERT INTO `parameleve` (`idEleve`, `idParamEm1`, `idParamEm2`, `idParamEl1`) VALUES
-(11, 1, 1, 1);
+(32, NULL, 5, 5),
+(33, NULL, 5, 5),
+(34, NULL, 5, 5),
+(35, NULL, 5, 5),
+(36, 5, 6, 6),
+(37, 5, 6, 6),
+(38, 5, 6, 6),
+(39, 5, 6, 6),
+(40, 5, 6, 6),
+(53, NULL, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -120378,15 +120396,17 @@ CREATE TABLE IF NOT EXISTS `paramem1` (
   `operateur4` tinyint(1) NOT NULL,
   `idParamEm1` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`idParamEm1`),
+  UNIQUE KEY `nom` (`nom`),
   KEY `idParamEm1` (`idParamEm1`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `paramem1`
 --
 
 INSERT INTO `paramem1` (`nom`, `nbBornes`, `nbQuestions`, `disparition`, `tempsRestantApparant`, `ordreApparition`, `borneSelectionnable`, `borneEqualsOp`, `valMax`, `frise`, `tempsRep`, `pairOnly`, `operateur1`, `operateur2`, `operateur3`, `operateur4`, `idParamEm1`) VALUES
-('testEm1', 2, 20, 0, 5000, 0, 0, 0, 100, 1, 10000, 0, 1, 0, 0, 0, 1);
+('CP', 2, 10, 1, 10, 0, 0, 0, 50, 0, 20, 1, 1, 1, 0, 0, 4),
+('CE1', 2, 10, 1, 10, 0, 0, 0, 50, 0, 20, 1, 1, 1, 0, 0, 5);
 
 -- --------------------------------------------------------
 
@@ -120414,15 +120434,17 @@ CREATE TABLE IF NOT EXISTS `paramem2` (
   `operateur4` tinyint(1) NOT NULL,
   `calcChaine` tinyint(1) NOT NULL,
   `idParamEm2` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`idParamEm2`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`idParamEm2`),
+  UNIQUE KEY `nom` (`nom`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `paramem2`
 --
 
 INSERT INTO `paramem2` (`nom`, `typeRep`, `nbCalcul`, `valMaxOperande`, `nombrePair`, `nombreImpair`, `typeNombre`, `repDeuxBornes`, `repQuatreBornes`, `repPaveNum`, `tempsRep`, `pairOnly`, `operateur1`, `operateur2`, `operateur3`, `operateur4`, `calcChaine`, `idParamEm2`) VALUES
-('testEm2', 1, 30, 10, 1, 1, 1, 1, 0, 0, 5000, 0, 0, 0, 1, 0, 0, 1);
+('CP', 0, 10, 20, 1, 1, 2, 1, 0, 0, 20, 0, 1, 1, 0, 0, 0, 5),
+('CE1', 2, 10, 20, 1, 1, 2, 0, 0, 1, 20, 0, 1, 1, 0, 0, 0, 6);
 
 -- --------------------------------------------------------
 
@@ -120494,15 +120516,6 @@ CREATE TABLE IF NOT EXISTS `souscompetenceeleve` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `souscompetenceeleve`
---
-
-INSERT INTO `souscompetenceeleve` (`idEleve`, `idSousCompetence`, `progression`, `nbTest`) VALUES
-(11, 1, 50, 80),
-(11, 2, 75, 140),
-(11, 3, 55, 90);
-
---
 -- Contraintes pour les tables déchargées
 --
 
@@ -120510,7 +120523,7 @@ INSERT INTO `souscompetenceeleve` (`idEleve`, `idSousCompetence`, `progression`,
 -- Contraintes pour la table `eleve`
 --
 ALTER TABLE `eleve`
-  ADD CONSTRAINT `eleve_ibfk_1` FOREIGN KEY (`classeId`) REFERENCES `classe` (`id`);
+  ADD CONSTRAINT `eleve_ibfk_1` FOREIGN KEY (`classeId`) REFERENCES `classe` (`classeId`);
 
 --
 -- Contraintes pour la table `parameleve`
