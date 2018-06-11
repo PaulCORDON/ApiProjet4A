@@ -20,6 +20,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import database.DBService;
 import fr.ensim.projet4a.model.Classe;
 import fr.ensim.projet4a.model.Eleve;
+import fr.ensim.projet4a.model.Enonce;
+import fr.ensim.projet4a.model.Exo1Math;
 import fr.ensim.projet4a.model.ParamEl1;
 import fr.ensim.projet4a.model.ParamEm1;
 import fr.ensim.projet4a.model.ParamEm2;
@@ -351,6 +353,21 @@ public class ExampleRestController {
 		public ArrayList<String> getSousCompEleve(@PathVariable @NotNull String mot) {
 			return DBService.getEnonceFromBD(mot);
 		}
+		
+		@PostMapping("/paramEl1/{nomParam}/enonce")
+		public void appliqueEnonceToParamEl1(@PathVariable @NotNull String nomParam,@RequestBody @Valid Enonce enonce) {
+			DBService.appliqueEnonceToParamEl1(nomParam,enonce);
+		}
+		
+		
+		/*
+		 * Toutes les actions disponibles pour gérer les exercices;
+		 */	
+		
+//		@GetMapping("/classe/{nom}/eleve/{nomprenom}/historiqueEm1")
+//		public ArrayList<Exo1Math> getHistoriqueExercices1MEleve(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+//			return DBService.getHistoriqueEm1EleveFromBD(nomprenom,nom);
+//		}
 		
 		
 }
