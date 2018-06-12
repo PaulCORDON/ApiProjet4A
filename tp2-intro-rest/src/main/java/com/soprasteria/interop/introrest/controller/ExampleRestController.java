@@ -353,11 +353,21 @@ public class ExampleRestController {
 		public ArrayList<String> getSousCompEleve(@PathVariable @NotNull String mot) {
 			return DBService.getEnonceFromBD(mot);
 		}
-		
+		/**
+		 * Applique un enoncé à un paramètrage d'exercice 1 de lecture en désapliquant les anciennes énoncé du paramétrage
+		 */
 		@PostMapping("/paramEl1/{nomParam}/enonce")
-		public void appliqueEnonceToParamEl1(@PathVariable @NotNull String nomParam,@RequestBody @Valid Enonce enonce) {
+		public void appliqueEnonceToParamEl1SupprHistorique(@PathVariable @NotNull String nomParam,@RequestBody @Valid Enonce enonce) {
 			DBService.appliqueEnonceToParamEl1(nomParam,enonce);
 		}
+		
+		/**
+		 * Désapplique un enoncé à un paramètrage d'exercice 1 de lecture
+		 */
+		@PostMapping("/paramEl1/{nomParam}/supprenonce")
+		public void desappliqueEnonceToParamEl1(@PathVariable @NotNull String nomParam,@RequestBody @Valid Enonce enonce) {
+			DBService.desappliqueEnonceToParamEl1(nomParam);	
+		}	
 		
 		
 		/*

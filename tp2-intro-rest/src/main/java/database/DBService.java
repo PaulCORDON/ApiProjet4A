@@ -1619,7 +1619,7 @@ public class DBService {
 	/* marche */
 	public static void supprParamEl1fromBD(@NotNull String nom) {
 		desappliqueParamEl1FromDB(nom);
-
+		desappliqueEnonceToParamEl1(nom);
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 
@@ -1886,68 +1886,71 @@ public class DBService {
 	// paramem1 WHERE nomPrenom = 'Paul Cordon' && nomClasse='6e'
 	// }
 
-	@SuppressWarnings("resource")
 	public static void appliqueEnonceToParamEl1(@NotNull String nomParam, @Valid Enonce enonce) {
-		addEnonceToDB(enonce);
+		if(!verifIfEnonceExiste(enonce)) {
+			addEnonceToDB(enonce);
+		}
+		
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 
 		try {
 			conn = makeJDBCConnection();
-			if(enonce.getMot3()==null) {
-				String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 IS NULL && mot4 IS NULL && mot5 IS NULL && mot6 IS NULL ))";
-				
-				prepareStat = conn.prepareStatement(insertQueryStatement);
-				prepareStat.setString(1, nomParam);
-				prepareStat.setString(2, enonce.getMot1());
-				prepareStat.setString(3, enonce.getMot2());
-			}
-			
-			if(enonce.getMot4()==null) {
-				String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 IS NULL && mot5 IS NULL && mot6 IS NULL ))";
-				
-				prepareStat = conn.prepareStatement(insertQueryStatement);
-				prepareStat.setString(1, nomParam);
-				prepareStat.setString(2, enonce.getMot1());
-				prepareStat.setString(3, enonce.getMot2());
-				prepareStat.setString(4, enonce.getMot3());
-			}
-			
-			if(enonce.getMot5()==null) {
-				String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 IS NULL && mot6 IS NULL ))";
-				
-				prepareStat = conn.prepareStatement(insertQueryStatement);
-				prepareStat.setString(1, nomParam);
-				prepareStat.setString(2, enonce.getMot1());
-				prepareStat.setString(3, enonce.getMot2());
-				prepareStat.setString(4, enonce.getMot3());
-				prepareStat.setString(5, enonce.getMot4());
-			}
-			
-			if(enonce.getMot6()==null) {
-				String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 = ? && mot6 IS NULL ))";
-				
-				prepareStat = conn.prepareStatement(insertQueryStatement);
-				prepareStat.setString(1, nomParam);
-				prepareStat.setString(2, enonce.getMot1());
-				prepareStat.setString(3, enonce.getMot2());
-				prepareStat.setString(4, enonce.getMot3());
-				prepareStat.setString(5, enonce.getMot4());
-				prepareStat.setString(6, enonce.getMot5());
-			}
-			else {
-				String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 = ? && mot6 = ? ))";
-				
-				prepareStat = conn.prepareStatement(insertQueryStatement);
-				prepareStat.setString(1, nomParam);
-				prepareStat.setString(2, enonce.getMot1());
-				prepareStat.setString(3, enonce.getMot2());
-				prepareStat.setString(4, enonce.getMot3());
-				prepareStat.setString(5, enonce.getMot4());
-				prepareStat.setString(6, enonce.getMot5());
-				prepareStat.setString(7, enonce.getMot6());
+			if (enonce.getMot3() == null) {
+				String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 IS NULL && mot4 IS NULL && mot5 IS NULL && mot6 IS NULL LIMIT 1))";
 
+				prepareStat = conn.prepareStatement(insertQueryStatement);
+				prepareStat.setString(1, nomParam);
+				prepareStat.setString(2, enonce.getMot1());
+				prepareStat.setString(3, enonce.getMot2());
+			}
+
+			else {
+				if (enonce.getMot4() == null) {
+					String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 IS NULL && mot5 IS NULL && mot6 IS NULL LIMIT 1))";
+
+					prepareStat = conn.prepareStatement(insertQueryStatement);
+					prepareStat.setString(1, nomParam);
+					prepareStat.setString(2, enonce.getMot1());
+					prepareStat.setString(3, enonce.getMot2());
+					prepareStat.setString(4, enonce.getMot3());
+				} else {
+					if (enonce.getMot5() == null) {
+						String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 IS NULL && mot6 IS NULL LIMIT 1))";
+
+						prepareStat = conn.prepareStatement(insertQueryStatement);
+						prepareStat.setString(1, nomParam);
+						prepareStat.setString(2, enonce.getMot1());
+						prepareStat.setString(3, enonce.getMot2());
+						prepareStat.setString(4, enonce.getMot3());
+						prepareStat.setString(5, enonce.getMot4());
+					} else {
+						if (enonce.getMot6() == null) {
+							String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 = ? && mot6 IS NULL LIMIT 1))";
+
+							prepareStat = conn.prepareStatement(insertQueryStatement);
+							prepareStat.setString(1, nomParam);
+							prepareStat.setString(2, enonce.getMot1());
+							prepareStat.setString(3, enonce.getMot2());
+							prepareStat.setString(4, enonce.getMot3());
+							prepareStat.setString(5, enonce.getMot4());
+							prepareStat.setString(6, enonce.getMot5());
+						} else {
+							String insertQueryStatement = "INSERT INTO `enonceparam`(`idParamEl1`, `idEnonce`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom = ? ),(SELECT `idEnonce` FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 = ? && mot6 = ? LIMIT 1))";
+
+							prepareStat = conn.prepareStatement(insertQueryStatement);
+							prepareStat.setString(1, nomParam);
+							prepareStat.setString(2, enonce.getMot1());
+							prepareStat.setString(3, enonce.getMot2());
+							prepareStat.setString(4, enonce.getMot3());
+							prepareStat.setString(5, enonce.getMot4());
+							prepareStat.setString(6, enonce.getMot5());
+							prepareStat.setString(7, enonce.getMot6());
+
+						}
+					}
 				}
+			}
 			log(prepareStat.toString());
 			// execute insert SQL statement
 			prepareStat.executeUpdate();
@@ -1971,13 +1974,194 @@ public class DBService {
 					r.printStackTrace();
 				}
 			}
-		}		
+		}
 
 	}
-	public static void addEnonceToDB(Enonce e){
+
+	public static boolean verifIfEnonceExiste(Enonce enonce) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		boolean res = false;
+		log("dans verif if existe");
+		try {
+			conn = makeJDBCConnection();
+			if (enonce.getMot3() == null) {
+				String insertQueryStatement = "SELECT COUNT(*) FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 IS NULL && mot4 IS NULL && mot5 IS NULL && mot6 IS NULL ";
+
+				prepareStat = conn.prepareStatement(insertQueryStatement);
+				prepareStat.setString(1, enonce.getMot1());
+				prepareStat.setString(2, enonce.getMot2());
+			}
+
+			else {
+				if (enonce.getMot4() == null) {
+					String insertQueryStatement = "SELECT COUNT(*)  FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 IS NULL && mot5 IS NULL && mot6 IS NULL ";
+
+					prepareStat = conn.prepareStatement(insertQueryStatement);
+
+					prepareStat.setString(1, enonce.getMot1());
+					prepareStat.setString(2, enonce.getMot2());
+					prepareStat.setString(3, enonce.getMot3());
+				} else {
+					if (enonce.getMot5() == null) {
+						String insertQueryStatement = "SELECT COUNT(*)  FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 IS NULL && mot6 IS NULL";
+
+						prepareStat = conn.prepareStatement(insertQueryStatement);
+						prepareStat.setString(1, enonce.getMot1());
+						prepareStat.setString(2, enonce.getMot2());
+						prepareStat.setString(3, enonce.getMot3());
+						prepareStat.setString(4, enonce.getMot4());
+					} else {
+						if (enonce.getMot6() == null) {
+							String insertQueryStatement = "SELECT COUNT(*)  FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 = ? && mot6 IS NULL";
+
+							prepareStat = conn.prepareStatement(insertQueryStatement);
+							prepareStat.setString(1, enonce.getMot1());
+							prepareStat.setString(2, enonce.getMot2());
+							prepareStat.setString(3, enonce.getMot3());
+							prepareStat.setString(4, enonce.getMot4());
+							prepareStat.setString(5, enonce.getMot5());
+						} else {
+							String insertQueryStatement = "SELECT COUNT(*) FROM `enonce` WHERE mot1 = ? && mot2 = ? && mot3 = ? && mot4 = ? && mot5 = ? && mot6 = ?";
+
+							prepareStat = conn.prepareStatement(insertQueryStatement);
+							prepareStat.setString(1, enonce.getMot1());
+							prepareStat.setString(2, enonce.getMot2());
+							prepareStat.setString(3, enonce.getMot3());
+							prepareStat.setString(4, enonce.getMot4());
+							prepareStat.setString(5, enonce.getMot5());
+							prepareStat.setString(6, enonce.getMot6());
+
+						}
+					}
+				}
+			}
+			log(prepareStat.toString());
+			// execute insert SQL statement
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+			// Let's iterate through the java ResultSet
+			while (rs.next()) {
+				if (rs.getInt("COUNT(*)") > 0) {
+					log(enonce.getMot1()+"existe dèjà");
+					res = true;
+				}
+
+			}
+		} catch (SQLException r) {
+			r.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException r) {
+					// TODO Auto-generated catch block
+					r.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException r) {
+					// TODO Auto-generated catch block
+					r.printStackTrace();
+				}
+			}
+		}
+		return res;
+	}
+
+	public static boolean verifIfMotIsInDB(String mot) {
+		Boolean haveParam = false;
+
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT COUNT(*) FROM mots WHERE mot = ?";
+
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setString(1, mot);
+			ResultSet rs = prepareStat.executeQuery();
+			while (rs.next()) {
+				if (rs.getInt("COUNT(*)") > 0) {
+					haveParam = true;
+				}
+
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return haveParam;
+	}
+	
+	
+	public static void ajouteMotToDB(String mot) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+
+			String insertQueryStatement = "INSERT  INTO  mots (mot) VALUES  (?)";
+
+			prepareStat = conn.prepareStatement(insertQueryStatement);
+			prepareStat.setString(1, mot);
+
+			// execute insert SQL statement
+			prepareStat.executeUpdate();
+			log(mot + " added successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	
+	public static void addEnonceToDB(Enonce e) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		if(!verifIfMotIsInDB(e.getMot1())) {
+			ajouteMotToDB(e.getMot1());
+		}
+		
 		try {
 			conn = makeJDBCConnection();
 
@@ -2012,7 +2196,46 @@ public class DBService {
 					r.printStackTrace();
 				}
 			}
-		}		
+		}
+	}
+
+	public static void desappliqueEnonceToParamEl1(@NotNull String nomParam) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+
+			String insertQueryStatement = "DELETE FROM `enonceparam` WHERE (idParamEl1=((SELECT idParamEl1 FROM paramel1 WHERE nom = ? )))";
+
+			prepareStat = conn.prepareStatement(insertQueryStatement);
+			prepareStat.setString(1, nomParam);
+
+			log(prepareStat.toString());
+			// execute insert SQL statement
+			prepareStat.executeUpdate();
+			log("enonce disapply successfully");
+		} catch (SQLException r) {
+			r.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException r) {
+					// TODO Auto-generated catch block
+					r.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException r) {
+					// TODO Auto-generated catch block
+					r.printStackTrace();
+				}
+			}
+		}
+
 	}
 
 	// Simple log utility
