@@ -6,15 +6,19 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import fr.ensim.projet4a.model.Calcul;
 import fr.ensim.projet4a.model.Classe;
 import fr.ensim.projet4a.model.Eleve;
 import fr.ensim.projet4a.model.Enonce;
+import fr.ensim.projet4a.model.Exo1Lecture;
 import fr.ensim.projet4a.model.Exo1Math;
+import fr.ensim.projet4a.model.Exo2Math;
 import fr.ensim.projet4a.model.ParamEl1;
 import fr.ensim.projet4a.model.ParamEm1;
 import fr.ensim.projet4a.model.ParamEm2;
@@ -1880,12 +1884,6 @@ public class DBService {
 
 	}
 
-	// public static ArrayList<Exo1Math> getHistoriqueEm1EleveFromBD(@NotNull String
-	// nomprenom, @NotNull String nom) {
-	// SELECT * FROM `exo1math` NATURAL JOIN classe NATURAL JOIN eleve NATURAL JOIN
-	// paramem1 WHERE nomPrenom = 'Paul Cordon' && nomClasse='6e'
-	// }
-
 	public static void appliqueEnonceToParamEl1(@NotNull String nomParam, @Valid Enonce enonce) {
 		if(!verifIfEnonceExiste(enonce)) {
 			addEnonceToDB(enonce);
@@ -2116,7 +2114,6 @@ public class DBService {
 		return haveParam;
 	}
 	
-	
 	public static void ajouteMotToDB(String mot) {
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
@@ -2153,7 +2150,6 @@ public class DBService {
 			}
 		}
 	}
-	
 	
 	public static void addEnonceToDB(Enonce e) {
 		Connection conn = null;
@@ -2238,10 +2234,405 @@ public class DBService {
 
 	}
 
+	public static ArrayList<Exo1Math> getHistoriqueEm1EleveFromBD(@NotNull String nomprenom, @NotNull String nom) {
+		/*Exo1Math el = null;
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT * FROM `exo2math` NATURAL JOIN paramem2 NATURAL JOIN eleve NATURAL JOIN classe WHERE idParamEm2=6 && idEleve=58";
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setInt(1, id);
+
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+
+			// Let's iterate through the java ResultSet
+			while (rs.next()) {
+				el = new Exo1Math(rs.getString("nom"), rs.getInt("nbEnonce"), rs.getLong("tempsApparution"),
+						rs.getInt("nbApparition"), rs.getBoolean("multipleApparution"),
+						rs.getBoolean("enonceDisparait"), rs.getInt("nbAparitionSimultanee"));
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+*/
+		return null;
+
+	}
+
+	public static ArrayList<Exo2Math> getHistoriqueEm2EleveFromBD(@NotNull String nomprenom, @NotNull String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static ArrayList<Exo1Lecture> getHistoriqueEl1EleveFromBD(@NotNull String nomprenom, @NotNull String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static void addEm1ToDB(@NotNull int idParam, @NotNull int idEleve, @NotNull String res, @NotNull Timestamp date, @Valid Calcul[] c) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		
+		try {
+			conn = makeJDBCConnection();
+
+			String insertQueryStatement = "INSERT INTO `exo1math`(`idParamEm1`, `idEleve`, `score`, `date`) VALUES (?,?,?,?)";
+
+			prepareStat = conn.prepareStatement(insertQueryStatement);
+			prepareStat.setInt(1, idParam);
+			prepareStat.setInt(2, idEleve);
+			prepareStat.setString(3, res);
+			prepareStat.setTimestamp(4, date);
+			prepareStat.executeUpdate();
+			log("Em1 added successfully");
+			for (Calcul calcul : c) {
+				calcul.setIdExo1Math(getIdEm1FromDB(idEleve,date));
+				addCalcul(calcul);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+
+	private static int getIdEm1FromDB(@NotNull int idEleve, @NotNull Timestamp date) {
+		int el=0;
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT `idExo1Math` FROM `exo1math` WHERE `idEleve`= ? &&`date`= ? LIMIT 1";
+
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setInt(1,idEleve);
+			prepareStat.setTimestamp(2, date);
+			
+			log(prepareStat.toString());
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+			while (rs.next()) {
+				el = rs.getInt("idExo1Math");
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+	
+	private static int getIdEm2FromDB(@NotNull int idEleve, @NotNull Timestamp date) {
+		int el=0;
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT `idExo2Math` FROM `exo2math` WHERE `idEleve`= ? &&`date`= ? LIMIT 1";
+
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setInt(1,idEleve);
+			prepareStat.setTimestamp(2, date);
+			
+			log(prepareStat.toString());
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+			while (rs.next()) {
+				el = rs.getInt("idExo2Math");
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+
+	public static void addEm2ToDB(@NotNull int idParam, @NotNull int idEleve, @NotNull String res, @NotNull Timestamp date, @Valid Calcul[] c) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		
+		try {
+			conn = makeJDBCConnection();
+
+			String insertQueryStatement = "INSERT INTO `exo2math`(`idParamEm2`, `idEleve`, `score`, `date`) VALUES (?,?,?,?)";
+
+			prepareStat = conn.prepareStatement(insertQueryStatement);
+			prepareStat.setInt(1, idParam);
+			prepareStat.setInt(2, idEleve);
+			prepareStat.setString(3, res);
+			prepareStat.setTimestamp(4, date);
+			prepareStat.executeUpdate();
+			log("Em2 added successfully");
+			for (Calcul calcul : c) {
+				calcul.setIdExo1Math(getIdEm2FromDB(idEleve,date));
+				addCalcul(calcul);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}		
+	}
+
+	public static void addEl1ToDB(@NotNull int idParam, @NotNull int idEleve, @NotNull int idEnonce, @NotNull String res, @NotNull Timestamp date) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+
+			String insertQueryStatement = "INSERT INTO `exo1lecture`(`idParamEl1`, `idEleve`, `idEnonce`, `resultat`, `date`) VALUES (?,?,?,?,?)";
+
+			prepareStat = conn.prepareStatement(insertQueryStatement);
+			prepareStat.setInt(1, idParam);
+			prepareStat.setInt(2, idEleve);
+			prepareStat.setInt(3, idEnonce);
+			prepareStat.setString(4, res);
+			prepareStat.setTimestamp(5, date);
+			prepareStat.executeUpdate();
+			log("El1 added successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	
+	public static int getIdBorne(int number) {
+		int el=0;
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+			// MySQL Select Query Tutorial
+			String getQueryStatement = "SELECT `idBorne` FROM `borne` WHERE `nombre`= ? LIMIT 1";
+
+			prepareStat = conn.prepareStatement(getQueryStatement);
+			prepareStat.setInt(1,number);			
+			log(prepareStat.toString());
+			// Execute the Query, and get a java ResultSet
+			ResultSet rs = prepareStat.executeQuery();
+			while (rs.next()) {
+				el = rs.getInt("idExo1Math");
+			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return el;
+	}
+	
+	public static void addCalcul(Calcul c) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+		
+		try {
+			conn = makeJDBCConnection();
+
+			String insertQueryStatement = "INSERT INTO `calcul`(`operation`, `reponseEleve`, `reponseJuste`, `idExo1Math`, `idExo2Math`, `idBorne1`, `idBorne2`, `idBorne3`) VALUES (?,?,?,?,?,?,?,?)";
+
+			prepareStat = conn.prepareStatement(insertQueryStatement);
+			prepareStat.setString(1, c.getOperation());
+			prepareStat.setString(2, c.getReponseEleve());
+			prepareStat.setString(3, c.getReponseJuste());
+			prepareStat.setInt(4, c.getIdExo1Math());
+			prepareStat.setInt(5, c.getIdExo2Math());
+			prepareStat.setInt(6, getIdBorne(c.getBornes()[1].getNombre()));
+			prepareStat.setInt(7, getIdBorne(c.getBornes()[2].getNombre()));
+			prepareStat.setInt(8, getIdBorne(c.getBornes()[3].getNombre()));
+			// execute insert SQL statement
+			prepareStat.executeUpdate();
+			log("enonce added successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public static void addBorne(int idEx1Math,int nombre,int idCalcul) {
+		Connection conn = null;
+		PreparedStatement prepareStat = null;
+
+		try {
+			conn = makeJDBCConnection();
+
+			String insertQueryStatement = "INSERT INTO `borne`( `nombre`, `idExo1Math`, `idCalcul`) VALUES (?,?,?)";
+
+			prepareStat = conn.prepareStatement(insertQueryStatement);
+			prepareStat.setInt(1, nombre);
+			prepareStat.setInt(2, idEx1Math);
+			prepareStat.setInt(3, idCalcul);
+			// execute insert SQL statement
+			prepareStat.executeUpdate();
+			log("enonce added successfully");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (prepareStat != null) {
+				try {
+					prepareStat.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	// Simple log utility
 	private static void log(String string) {
 		System.out.println(string);
-
 	}
+
 
 }

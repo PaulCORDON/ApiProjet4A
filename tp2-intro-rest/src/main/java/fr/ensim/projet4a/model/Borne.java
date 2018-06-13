@@ -1,31 +1,44 @@
 package fr.ensim.projet4a.model;
 
-import java.util.ArrayList;
+
 
 public class Borne {
-	ArrayList<Integer> bornes;
 
-    public Borne(int nbBornes) {
-        bornes = new ArrayList<Integer>(nbBornes);
-    }
+	private int idBorne;
+	private int nombre;
+	private int idExo1Math;
+	
+	public Borne(int idBorne, int bornes, int idExo1Math, int idCalcul) {
 
-    public void add(int borne) {
-        bornes.add(borne);
-    }
+		this.idBorne = idBorne;
+		this.setNombre(bornes);
+		this.idExo1Math = idExo1Math;
+		
+	}
 
-    public int size() {
-        return bornes.size();
-    }
+	public int getNombre() {
+		return nombre;
+	}
 
-    public int get(int j) {
-        return bornes.get(j);
-    }
+	public void setNombre(int nombre) {
+		this.nombre = nombre;
+	}
 
-    public void set(int j, int i) {
-        bornes.set(j,i);
-    }
+	public int getIdBorne() {
+		return idBorne;
+	}
 
-    public int indexOf(int b) {
-        return bornes.indexOf(b);
-    }
+	public void setIdBorne(int idBorne) {
+		this.idBorne = idBorne;
+	}
+
+	public int getIdExo1Math() {
+		return idExo1Math;
+	}
+
+	public void setIdExo1Math(int idExo1Math) {
+		this.idExo1Math = idExo1Math;
+	}
+
 }
+

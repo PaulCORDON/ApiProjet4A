@@ -1,100 +1,90 @@
 package fr.ensim.projet4a.model;
 
 public class Calcul {
-	private int operande1;
-	private int operande2;
-	private char operation;
-	private boolean multiOp = false;
-	private int resultat;
+	private String reponseJuste;
+	private String reponseEleve;
+	private String operation;
+	private int idExo1Math;
+	private int idExo2Math;
+	private Borne[] bornes;
+	private int idCalcul;
 
-	/**
-	 * Constructeur de la classe calcul.
-	 *
-	 * @param op1
-	 *            le premier operande du calcul.
-	 * @param op2
-	 *            le second operande du calcul.
-	 * @param oper
-	 *            l'operation du calcul.
-	 */
-	public Calcul(int op1, int op2, char oper) {
-		operande1 = op1;
-		operande2 = op2;
-		operation = oper;
-		switch (operation) {
-		case '+':
-			resultat = operande1 + operande2;
-			break;
-		case '-':
-			if (operande1 < operande2) {
-				int tempo = operande1;
-				operande1 = operande2;
-				operande2 = tempo;
-			}
-			resultat = operande1 - operande2;
-			break;
-		case '*':
-			resultat = operande1 * operande2;
-			operation = 'X';
-			break;
-		case '/':
-			resultat = operande1 * operande2;
-			int tempo = resultat;
-			resultat = operande1;
-			operande1 = operande2;
-			operande2 = tempo;
 
-			tempo = operande1;
-			operande1 = operande2;
-			operande2 = tempo;
-			break;
-		}
-
+	public Calcul(String reponseJuste, String reponseEleve, String operation, Borne[] bornes) {
+		super();
+		this.reponseJuste = reponseJuste;
+		this.reponseEleve = reponseEleve;
+		this.operation = operation;
+		this.bornes = bornes;
 	}
 
-	public String getCalculString() {
-		if (multiOp) {
-			// return "" + cal.getOp1Int() + " " + cal.getOperation() + " " +
-			// cal.getOp2Int() + " " + operande2;
-		}
-
-		return "" + operande1 + operation + operande2;
+	public Calcul(String reponseJuste, String reponseEleve, String operation, int idExo1Math, int idExo2Math,
+			Borne[] bornes, int idCalcul) {
+		super();
+		this.reponseJuste = reponseJuste;
+		this.reponseEleve = reponseEleve;
+		this.operation = operation;
+		this.idExo1Math = idExo1Math;
+		this.idExo2Math = idExo2Math;
+		this.bornes = bornes;
+		this.idCalcul = idCalcul;
 	}
 
-	public String getOp1String() {
-		return "" + operande1;
+	public Borne[] getBornes() {
+		return bornes;
 	}
 
-	public String getOp2String() {
-		return "" + operande2;
+	public void setBornes(Borne[] bornes) {
+		this.bornes = bornes;
 	}
 
-	public int getOp1Int() {
-		return operande1;
+	public int getIdCalcul() {
+		return idCalcul;
 	}
 
-	public int getOp2Int() {
-		return operande2;
+	public void setIdCalcul(int idCalcul) {
+		this.idCalcul = idCalcul;
+	}
+
+	public String getReponseJuste() {
+		return reponseJuste;
+	}
+
+	public void setReponseJuste(String reponseJuste) {
+		this.reponseJuste = reponseJuste;
+	}
+
+	public String getReponseEleve() {
+		return reponseEleve;
+	}
+
+	public void setReponseEleve(String reponseEleve) {
+		this.reponseEleve = reponseEleve;
 	}
 
 	public String getOperation() {
-		return "" + operation;
+		return operation;
 	}
 
-	public int getResultatInt() {
-		return resultat;
+	public void setOperation(String operation) {
+		this.operation = operation;
 	}
 
-	public String getResultatString() {
-		return "" + resultat;
+	public int getIdExo1Math() {
+		return idExo1Math;
 	}
 
-	public String ToString() {
-		if (multiOp) {
-			// return "" + cal.getOp1Int() + " " + cal.getOperation() + " " +
-			// cal.getOp2Int() + " " + operande2 + " = " + resultat;
-		}
-		return "" + operande1 + " " + operation + " " + operande2 + " = " + resultat;
+	public void setIdExo1Math(int idExo1Math) {
+		this.idExo1Math = idExo1Math;
 	}
+
+	public int getIdExo2Math() {
+		return idExo2Math;
+	}
+
+	public void setIdExo2Math(int idExo2Math) {
+		this.idExo2Math = idExo2Math;
+	}
+
 
 }

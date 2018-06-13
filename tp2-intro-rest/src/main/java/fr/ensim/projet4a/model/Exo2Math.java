@@ -1,143 +1,91 @@
 package fr.ensim.projet4a.model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Exo2Math {
+	private int idExo2Math;
+	private ParamEm2 paramEm2;
+	private Eleve el;
+	private int score;
+	private Timestamp date;
 
-    /**
-     * liste des calculs
-     */
-    private ArrayList<Calcul> enoncees = new ArrayList<Calcul>();
+	/**
+	 * Liste des calculs
+	 */
+	private ArrayList<Calcul> calculEnonce;
 
-    private ParamEm2 param;
+	/**
+	 * Liste des listes de bornes
+	 */
+	private ArrayList<Borne> bornes;
 
-    private int op1;
-    private int op2;
-    private int choixOp;
+	public int getIdExo2Math() {
+		return idExo2Math;
+	}
 
+	public void setIdExo2Math(int idExo2Math) {
+		this.idExo2Math = idExo2Math;
+	}
 
-    private boolean choixOpVali = true;
-    /**
-     * si les bornes sont validée alors on passe à false
-     */
-    
-    private  int a = 0;
-    public Exo2Math(ParamEm2 param) {
-        this.param = param;
+	public ParamEm2 getParamEm2() {
+		return paramEm2;
+	}
 
-        while (a < this.param.getNbCalcul()){op1 = (int) (Math.random() * param.getValMaxOperande());
-                op2 = (int) (Math.random() * param.getValMaxOperande());
-                op1 = op1+1;
-                op2 = op2+1;
-                if(this.param.getTypeNombre() == 1) {
-                    if(op1%2 != 0 && op2%2 != 0){
-                    choixOpVali = true;
-                    do {
-                        choixOp = (int) (Math.random() * 4);
-                        if (param.getOperateur()[choixOp]) {
-                            choixOpVali = false;
-                        }
-                    } while (choixOpVali);
+	public void setParamEm2(ParamEm2 paramEm2) {
+		this.paramEm2 = paramEm2;
+	}
 
-                    switch (choixOp) {
-                        case 0:
-                            enoncees.add(new Calcul(op1, op2, '+'));
-                            break;
-                        case 1:
-                            enoncees.add(new Calcul(op1, op2, '-'));
-                            break;
-                        case 2:
-                            enoncees.add(new Calcul(op1, op2, '*'));
-                            break;
-                        case 3:
-                            enoncees.add(new Calcul(op1, op2, '/'));
-                            break;
+	public Eleve getEl() {
+		return el;
+	}
 
+	public void setEl(Eleve el) {
+		this.el = el;
+	}
 
-                    }
+	public int getScore() {
+		return score;
+	}
 
-                    a++;
-                }
-                }
-                if(this.param.getTypeNombre() == 0){
-            if(op1%2 == 0 && op2%2==0){
-                    choixOpVali = true;
-                    do{
-                        choixOp = (int) (Math.random() * 4);
-                        if (param.getOperateur()[choixOp]){
-                            choixOpVali = false;
-                        }
-                    }while (choixOpVali);
+	public void setScore(int score) {
+		this.score = score;
+	}
 
-                    switch (choixOp){
-                        case 0:
-                            enoncees.add(new Calcul(op1, op2, '+'));
-                            break;
-                        case 1:
-                            enoncees.add(new Calcul(op1, op2, '-'));
-                            break;
-                        case 2:
-                            enoncees.add(new Calcul(op1, op2, '*'));
-                            break;
-                        case 3 :
-                            enoncees.add(new Calcul(op1,op2,'/'));
-                            break;
+	public Timestamp getDate() {
+		return date;
+	}
 
+	public void setDate(Timestamp date) {
+		this.date = date;
+	}
 
-                    }
+	public ArrayList<Calcul> getCalculEnonce() {
+		return calculEnonce;
+	}
 
-                    a++;
-                }
+	public void setCalculEnonce(ArrayList<Calcul> calculEnonce) {
+		this.calculEnonce = calculEnonce;
+	}
 
-                }
-                if (this.param.getTypeNombre() == 2){
+	public ArrayList<Borne> getBornes() {
+		return bornes;
+	}
 
-                    choixOpVali = true;
-                    do{
-                        choixOp = (int) (Math.random() * 4);
-                        if (param.getOperateur()[choixOp]){
-                            choixOpVali = false;
-                        }
-                    }while (choixOpVali);
+	public void setBornes(ArrayList<Borne> bornes) {
+		this.bornes = bornes;
+	}
 
-                    switch (choixOp){
-                        case 0:
-                            enoncees.add(new Calcul(op1, op2, '+'));
-                            break;
-                        case 1:
-                            enoncees.add(new Calcul(op1, op2, '-'));
-                            break;
-                        case 2:
-                            enoncees.add(new Calcul(op1, op2, '*'));
-                            break;
-                        case 3 :
-                            enoncees.add(new Calcul(op1,op2,'/'));
-                            break;
+	public Exo2Math(int idExo2Math, ParamEm2 paramEm2, Eleve el, int score, Timestamp date,
+			ArrayList<Calcul> calculEnonce, ArrayList<Borne> bornes) {
 
+		this.idExo2Math = idExo2Math;
+		this.paramEm2 = paramEm2;
+		this.el = el;
+		this.score = score;
+		this.date = date;
+		this.calculEnonce = calculEnonce;
+		this.bornes = bornes;
+	}
 
-                    }
-
-                    a++;
-
-
-            }
-
-        }
-    }
-
-    /**
-     * @return la réponse du calcul sous forme de string
-     */
-    public ArrayList<Calcul> getCalcul() {
-        return enoncees;
-    }
-
-    /**
-     * @return le type de reponse que l'élève doit donner
-     */
-    public ParamEm2 getParam() {
-        return param;
-    }
-
-   
 }

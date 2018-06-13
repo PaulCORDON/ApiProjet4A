@@ -1,6 +1,7 @@
 package com.soprasteria.interop.introrest.controller;
 
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.validation.Valid;
@@ -18,10 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import database.DBService;
+import fr.ensim.projet4a.model.Calcul;
 import fr.ensim.projet4a.model.Classe;
 import fr.ensim.projet4a.model.Eleve;
 import fr.ensim.projet4a.model.Enonce;
+import fr.ensim.projet4a.model.Exo1Lecture;
 import fr.ensim.projet4a.model.Exo1Math;
+import fr.ensim.projet4a.model.Exo2Math;
 import fr.ensim.projet4a.model.ParamEl1;
 import fr.ensim.projet4a.model.ParamEm1;
 import fr.ensim.projet4a.model.ParamEm2;
@@ -373,11 +377,68 @@ public class ExampleRestController {
 		/*
 		 * Toutes les actions disponibles pour gérer les exercices;
 		 */	
-		
-//		@GetMapping("/classe/{nom}/eleve/{nomprenom}/historiqueEm1")
-//		public ArrayList<Exo1Math> getHistoriqueExercices1MEleve(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
-//			return DBService.getHistoriqueEm1EleveFromBD(nomprenom,nom);
-//		}
+		/**
+		 * Réccupère les éxercies 1 de calcul fait par tel élève
+		 * @param nomprenom
+		 * @param nom
+		 * @return
+		 */
+		@GetMapping("/classe/{nom}/eleve/{nomprenom}/historiqueEm1")
+		public ArrayList<Exo1Math> getHistoriqueExercices1MEleve(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+			return DBService.getHistoriqueEm1EleveFromBD(nomprenom,nom);
+		}
+		/**
+		 * Réccupère les éxercies 2 de calcul fait par tel élève
+		 * @param nomprenom
+		 * @param nom
+		 * @return
+		 */
+		@GetMapping("/classe/{nom}/eleve/{nomprenom}/historiqueEm2")
+		public ArrayList<Exo2Math> getHistoriqueExercices2MEleve(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+			return DBService.getHistoriqueEm2EleveFromBD(nomprenom,nom);
+		}
+		/**
+		 * Réccupère les éxercies 1 de lecture fait par tel élève
+		 * @param nomprenom
+		 * @param nom
+		 * @return
+		 */
+		@GetMapping("/classe/{nom}/eleve/{nomprenom}/historiqueEl1")
+		public ArrayList<Exo1Lecture> getHistoriqueExercices1LEleve(@PathVariable @NotNull String nomprenom, @PathVariable @NotNull String nom) {
+			return DBService.getHistoriqueEl1EleveFromBD(nomprenom,nom);
+		}
+		/**
+		 * Ajoute un éxercice 1 de calcul que vient de faire un élève à la base de donnée 
+		 * @param idParam
+		 * @param idEleve
+		 * @param res
+		 */
+		@PostMapping("/Em1/paramEm1/{idParam}/eleve/{idEleve}/score/{res}/date/{date}")
+		public void addEm1ToDB(@PathVariable @NotNull int idParam,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date,@RequestBody @Valid Calcul[] c) {
+		/*URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("").buildAndExpand(c).toUri();*/
+			
+			DBService.addEm1ToDB(idParam,idEleve,res,date,c);
+		}
+		/**
+		 * Ajoute un éxercice 2 de calcul que vient de faire un élève à la base de donnée 
+		 * @param idParam
+		 * @param idEleve
+		 * @param res
+		 */
+		@PostMapping("/Em2/paramEm2/{idParam}/eleve/{idEleve}/score/{res}/date/{date}")
+		public void addEm2ToDB(@PathVariable @NotNull int idParam,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date,@RequestBody @Valid Calcul[] c) {
+			DBService.addEm2ToDB(idParam,idEleve,res,date,c);
+		}
+		/**
+		 * Ajoute un éxercice 1 de lecture que vient de faire un élève à la base de donnée 
+		 * @param idParam
+		 * @param idEleve
+		 * @param res
+		 */
+		@PostMapping("/El1/paramEl1/{idParam}/enonce/{idEnonce}/eleve/{idEleve}/score/{res}/date/{date}")
+		public void addEl1ToDB(@PathVariable @NotNull int idParam,@PathVariable @NotNull int idEnonce,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date) {
+			DBService.addEl1ToDB(idParam,idEleve,idEnonce,res,date);
+		}
 		
 		
 }
