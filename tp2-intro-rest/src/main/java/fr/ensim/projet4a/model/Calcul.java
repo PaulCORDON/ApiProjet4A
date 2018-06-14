@@ -6,6 +6,7 @@ public class Calcul {
 	private int idExo1Math;
 	private int idExo2Math;
 	private int idCalcul;
+	
 	public boolean isReponseJuste() {
 		return reponseJuste;
 	}
@@ -45,9 +46,12 @@ public class Calcul {
 		this.idCalcul = idCalcul;
 	}
 	public Calcul(boolean reponseJuste, String operation) {
-		super();
+		
 		this.reponseJuste = reponseJuste;
 		this.operation = operation;
 	}
-
+	public Calcul() {
+		
+	}
+	
 }

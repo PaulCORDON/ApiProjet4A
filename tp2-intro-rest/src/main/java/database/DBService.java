@@ -2472,7 +2472,7 @@ public class DBService {
 	public static void addEl1ToDB(@NotNull String nom, @NotNull int idEleve, @NotNull int idEnonce, @NotNull String res, @NotNull Timestamp date) {
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
-
+		
 		try {
 			conn = makeJDBCConnection();
 
