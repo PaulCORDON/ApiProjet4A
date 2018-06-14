@@ -413,11 +413,12 @@ public class ExampleRestController {
 		 * @param idEleve
 		 * @param res
 		 */
-		@PostMapping("/Em1/paramEm1/{idParam}/eleve/{idEleve}/score/{res}/date/{date}")
-		public void addEm1ToDB(@PathVariable @NotNull int idParam,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date,@RequestBody @Valid Calcul[] c) {
-		/*URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("").buildAndExpand(c).toUri();*/
+		@PostMapping("/Em1/paramEm1/{nom}/eleve/{idEleve}/score/{res}/date/{date}")
+		public void addEm1ToDB(@PathVariable @NotNull String nom,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date,@RequestBody @Valid Calcul c) {
 			
-			DBService.addEm1ToDB(idParam,idEleve,res,date,c);
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{reponseJuste,operation}").buildAndExpand(c).toUri();
+			System.out.println("CCCCCCC"+c.getOperation() +" "+c.isReponseJuste());
+			//DBService.addEm1ToDB(nom,idEleve,res,date,c);
 		}
 		/**
 		 * Ajoute un éxercice 2 de calcul que vient de faire un élève à la base de donnée 
@@ -425,9 +426,9 @@ public class ExampleRestController {
 		 * @param idEleve
 		 * @param res
 		 */
-		@PostMapping("/Em2/paramEm2/{idParam}/eleve/{idEleve}/score/{res}/date/{date}")
-		public void addEm2ToDB(@PathVariable @NotNull int idParam,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date,@RequestBody @Valid Calcul[] c) {
-			DBService.addEm2ToDB(idParam,idEleve,res,date,c);
+		@PostMapping("/Em2/paramEm2/{nom}/eleve/{idEleve}/score/{res}/date/{date}")
+		public void addEm2ToDB(@PathVariable @NotNull String nom,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date,@RequestBody @Valid Calcul[] c) {
+			DBService.addEm2ToDB(nom,idEleve,res,date,c);
 		}
 		/**
 		 * Ajoute un éxercice 1 de lecture que vient de faire un élève à la base de donnée 
@@ -435,9 +436,9 @@ public class ExampleRestController {
 		 * @param idEleve
 		 * @param res
 		 */
-		@PostMapping("/El1/paramEl1/{idParam}/enonce/{idEnonce}/eleve/{idEleve}/score/{res}/date/{date}")
-		public void addEl1ToDB(@PathVariable @NotNull int idParam,@PathVariable @NotNull int idEnonce,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date) {
-			DBService.addEl1ToDB(idParam,idEleve,idEnonce,res,date);
+		@PostMapping("/El1/paramEl1/{nom}/enonce/{idEnonce}/eleve/{idEleve}/score/{res}/date/{date}")
+		public void addEl1ToDB(@PathVariable @NotNull String nom,@PathVariable @NotNull int idEnonce,@PathVariable @NotNull int idEleve,@PathVariable @NotNull String res,@PathVariable @NotNull Timestamp date) {
+			DBService.addEl1ToDB(nom,idEleve,idEnonce,res,date);
 		}
 		
 		

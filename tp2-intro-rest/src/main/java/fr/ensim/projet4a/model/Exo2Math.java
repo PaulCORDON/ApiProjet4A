@@ -15,10 +15,6 @@ public class Exo2Math {
 	 */
 	private ArrayList<Calcul> calculEnonce;
 
-	/**
-	 * Liste des listes de bornes
-	 */
-	private ArrayList<Borne> bornes;
 
 	public int getIdExo2Math() {
 		return idExo2Math;
@@ -68,16 +64,10 @@ public class Exo2Math {
 		this.calculEnonce = calculEnonce;
 	}
 
-	public ArrayList<Borne> getBornes() {
-		return bornes;
-	}
-
-	public void setBornes(ArrayList<Borne> bornes) {
-		this.bornes = bornes;
-	}
+	
 
 	public Exo2Math(int idExo2Math, ParamEm2 paramEm2, Eleve el, int score, Timestamp date,
-			ArrayList<Calcul> calculEnonce, ArrayList<Borne> bornes) {
+			ArrayList<Calcul> calculEnonce) {
 
 		this.idExo2Math = idExo2Math;
 		this.paramEm2 = paramEm2;
@@ -85,7 +75,7 @@ public class Exo2Math {
 		this.score = score;
 		this.date = date;
 		this.calculEnonce = calculEnonce;
-		this.bornes = bornes;
+		
 	}
 
 }

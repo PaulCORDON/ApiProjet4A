@@ -19,12 +19,7 @@ public class Exo1Math extends Exercice{
      */
     private ArrayList<Calcul> calculEnonce;
 
-    /**
-     * Liste des listes de bornes
-     */
-    private ArrayList<Borne> bornes;
-     
-   
+ 
     
 
    public Eleve getEl() {
@@ -35,20 +30,12 @@ public class Exo1Math extends Exercice{
 		this.el = el;
 	}
 
-public ArrayList<Calcul> getCalculEnonce() {
+	public ArrayList<Calcul> getCalculEnonce() {
 		return calculEnonce;
 	}
 
 	public void setCalculEnonce(ArrayList<Calcul> calculEnonce) {
 		this.calculEnonce = calculEnonce;
-	}
-
-	public ArrayList<Borne> getBornes() {
-		return bornes;
-	}
-
-	public void setBornes(ArrayList<Borne> bornes) {
-		this.bornes = bornes;
 	}
 
 	public int getResultats() {
@@ -84,7 +71,7 @@ public ArrayList<Calcul> getCalculEnonce() {
 	}
 	
 	public Exo1Math(int idExo1Math, ParamEm1 paramEm1, Eleve el, int score, Timestamp date,
-			ArrayList<Calcul> calculEnonce, ArrayList<Borne> bornes) {
+			ArrayList<Calcul> calculEnonce) {
 		
 		this.idExo1Math = idExo1Math;
 		this.paramEm1 = paramEm1;
@@ -92,7 +79,7 @@ public ArrayList<Calcul> getCalculEnonce() {
 		this.score = score;
 		this.date = date;
 		this.calculEnonce = calculEnonce;
-		this.bornes = bornes;
+		
 	}
 
 }

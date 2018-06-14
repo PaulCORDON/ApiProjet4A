@@ -127,6 +127,7 @@ public class DBService {
 			rs = prepareStat1.executeQuery();
 			while (rs.next()) {
 				Eleve el = new Eleve();
+				el.setIdEleve(rs.getInt("idEleve"));
 				el.setNomPrenom(rs.getString("nomPrenom"));
 				el.setDateDeNaissance(rs.getDate("dateDeNaissance"));
 				el.setClasseId(rs.getInt("classeId"));
@@ -570,11 +571,11 @@ public class DBService {
 		try {
 			conn = makeJDBCConnection();
 			// MySQL Select Query Tutorial
-			String getQueryStatement = "SELECT * FROM eleve NATURAL JOIN paramel1 WHERE classeId = (SELECT classeId FROM classe WHERE nomClasse = ?) && nomPrenom = ?";
+			String getQueryStatement = "SELECT * FROM paramel1 NATURAL JOIN parameleve WHERE idEleve = (SELECT idEleve FROM eleve WHERE nomPrenom = ? &&  (classeId = (SELECT classeId FROM classe WHERE nomClasse = ?)))";
 			prepareStat = conn.prepareStatement(getQueryStatement);
-			prepareStat.setString(1, nom);
-			prepareStat.setString(2, nomPrenom);
-
+			prepareStat.setString(2, nom);
+			prepareStat.setString(1, nomPrenom);
+			log(prepareStat.toString());
 			// Execute the Query, and get a java ResultSet
 			ResultSet rs = prepareStat.executeQuery();
 
@@ -2293,17 +2294,17 @@ public class DBService {
 		return null;
 	}
 
-	public static void addEm1ToDB(@NotNull int idParam, @NotNull int idEleve, @NotNull String res, @NotNull Timestamp date, @Valid Calcul[] c) {
+	public static void addEm1ToDB(@NotNull String nom, @NotNull int idEleve, @NotNull String res, @NotNull Timestamp date, @Valid Calcul[] c) {
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 		
 		try {
 			conn = makeJDBCConnection();
 
-			String insertQueryStatement = "INSERT INTO `exo1math`(`idParamEm1`, `idEleve`, `score`, `date`) VALUES (?,?,?,?)";
+			String insertQueryStatement = "INSERT INTO `exo1math`(`idParamEm1`, `idEleve`, `score`, `date`) VALUES ((SELECT idParamEm1 FROM paramem1 WHERE nom=?),?,?,?)";
 
 			prepareStat = conn.prepareStatement(insertQueryStatement);
-			prepareStat.setInt(1, idParam);
+			prepareStat.setString(1, nom);
 			prepareStat.setInt(2, idEleve);
 			prepareStat.setString(3, res);
 			prepareStat.setTimestamp(4, date);
@@ -2311,6 +2312,7 @@ public class DBService {
 			log("Em1 added successfully");
 			for (Calcul calcul : c) {
 				calcul.setIdExo1Math(getIdEm1FromDB(idEleve,date));
+				calcul.setIdExo2Math(0);
 				addCalcul(calcul);
 			}
 		} catch (SQLException e) {
@@ -2424,24 +2426,25 @@ public class DBService {
 		return el;
 	}
 
-	public static void addEm2ToDB(@NotNull int idParam, @NotNull int idEleve, @NotNull String res, @NotNull Timestamp date, @Valid Calcul[] c) {
+	public static void addEm2ToDB(@NotNull String nom, @NotNull int idEleve, @NotNull String res, @NotNull Timestamp date, @Valid Calcul[] c) {
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 		
 		try {
 			conn = makeJDBCConnection();
 
-			String insertQueryStatement = "INSERT INTO `exo2math`(`idParamEm2`, `idEleve`, `score`, `date`) VALUES (?,?,?,?)";
+			String insertQueryStatement = "INSERT INTO `exo2math`(`idParamEm2`, `idEleve`, `score`, `date`) VALUES ((SELECT idParamEm2 FROM paramem2 WHERE nom=?),?,?,?)";
 
 			prepareStat = conn.prepareStatement(insertQueryStatement);
-			prepareStat.setInt(1, idParam);
+			prepareStat.setString(1, nom);
 			prepareStat.setInt(2, idEleve);
 			prepareStat.setString(3, res);
 			prepareStat.setTimestamp(4, date);
 			prepareStat.executeUpdate();
 			log("Em2 added successfully");
 			for (Calcul calcul : c) {
-				calcul.setIdExo1Math(getIdEm2FromDB(idEleve,date));
+				calcul.setIdExo2Math(getIdEm2FromDB(idEleve,date));
+				calcul.setIdExo1Math(0);
 				addCalcul(calcul);
 			}
 		} catch (SQLException e) {
@@ -2466,17 +2469,17 @@ public class DBService {
 		}		
 	}
 
-	public static void addEl1ToDB(@NotNull int idParam, @NotNull int idEleve, @NotNull int idEnonce, @NotNull String res, @NotNull Timestamp date) {
+	public static void addEl1ToDB(@NotNull String nom, @NotNull int idEleve, @NotNull int idEnonce, @NotNull String res, @NotNull Timestamp date) {
 		Connection conn = null;
 		PreparedStatement prepareStat = null;
 
 		try {
 			conn = makeJDBCConnection();
 
-			String insertQueryStatement = "INSERT INTO `exo1lecture`(`idParamEl1`, `idEleve`, `idEnonce`, `resultat`, `date`) VALUES (?,?,?,?,?)";
+			String insertQueryStatement = "INSERT INTO `exo1lecture`(`idParamEl1`, `idEleve`, `idEnonce`, `resultat`, `date`) VALUES ((SELECT idParamEl1 FROM paramel1 WHERE nom=?),?,?,?,?)";
 
 			prepareStat = conn.prepareStatement(insertQueryStatement);
-			prepareStat.setInt(1, idParam);
+			prepareStat.setString(1, nom);
 			prepareStat.setInt(2, idEleve);
 			prepareStat.setInt(3, idEnonce);
 			prepareStat.setString(4, res);
@@ -2506,47 +2509,6 @@ public class DBService {
 		
 	}
 	
-	public static int getIdBorne(int number) {
-		int el=0;
-		Connection conn = null;
-		PreparedStatement prepareStat = null;
-
-		try {
-			conn = makeJDBCConnection();
-			// MySQL Select Query Tutorial
-			String getQueryStatement = "SELECT `idBorne` FROM `borne` WHERE `nombre`= ? LIMIT 1";
-
-			prepareStat = conn.prepareStatement(getQueryStatement);
-			prepareStat.setInt(1,number);			
-			log(prepareStat.toString());
-			// Execute the Query, and get a java ResultSet
-			ResultSet rs = prepareStat.executeQuery();
-			while (rs.next()) {
-				el = rs.getInt("idExo1Math");
-			}
-
-		} catch (
-
-		SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (prepareStat != null) {
-				try {
-					prepareStat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return el;
-	}
 	
 	public static void addCalcul(Calcul c) {
 		Connection conn = null;
@@ -2554,18 +2516,23 @@ public class DBService {
 		
 		try {
 			conn = makeJDBCConnection();
+			if(c.getIdExo1Math()!=0) {
+				String insertQueryStatement = "INSERT INTO `calcul`(`operation`, `reponseJuste`, `idExo1Math`) VALUES (?,?,?)";
 
-			String insertQueryStatement = "INSERT INTO `calcul`(`operation`, `reponseEleve`, `reponseJuste`, `idExo1Math`, `idExo2Math`, `idBorne1`, `idBorne2`, `idBorne3`) VALUES (?,?,?,?,?,?,?,?)";
+				prepareStat = conn.prepareStatement(insertQueryStatement);
+				prepareStat.setString(1, c.getOperation());
+				prepareStat.setBoolean(2, c.isReponseJuste());
+				prepareStat.setInt(3, c.getIdExo1Math());
+			}
+			else {
+				String insertQueryStatement = "INSERT INTO `calcul`(`operation`, `reponseJuste`, `idExo2Math`) VALUES (?,?,?)";
 
-			prepareStat = conn.prepareStatement(insertQueryStatement);
-			prepareStat.setString(1, c.getOperation());
-			prepareStat.setString(2, c.getReponseEleve());
-			prepareStat.setString(3, c.getReponseJuste());
-			prepareStat.setInt(4, c.getIdExo1Math());
-			prepareStat.setInt(5, c.getIdExo2Math());
-			prepareStat.setInt(6, getIdBorne(c.getBornes()[1].getNombre()));
-			prepareStat.setInt(7, getIdBorne(c.getBornes()[2].getNombre()));
-			prepareStat.setInt(8, getIdBorne(c.getBornes()[3].getNombre()));
+				prepareStat = conn.prepareStatement(insertQueryStatement);
+				prepareStat.setString(1, c.getOperation());
+				prepareStat.setBoolean(2, c.isReponseJuste());
+				prepareStat.setInt(3, c.getIdExo2Math());
+			}
+			
 			// execute insert SQL statement
 			prepareStat.executeUpdate();
 			log("enonce added successfully");
