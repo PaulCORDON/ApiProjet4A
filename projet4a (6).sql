@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 12 juin 2018 à 15:46
+-- Généré le :  mer. 20 juin 2018 à 08:58
 -- Version du serveur :  5.7.21
 -- Version de PHP :  5.6.35
 
@@ -25,86 +25,32 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `borne`
---
-
-DROP TABLE IF EXISTS `borne`;
-CREATE TABLE IF NOT EXISTS `borne` (
-  `nombre` int(11) NOT NULL,
-  `idExo1Math` int(11) NOT NULL,
-  `idCalcul` int(11) NOT NULL,
-  KEY `idExo1Math` (`idExo1Math`),
-  KEY `idCalcul` (`idCalcul`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `borne`
---
-
-INSERT INTO `borne` (`nombre`, `idExo1Math`, `idCalcul`) VALUES
-(1, 1, 5),
-(2, 1, 3),
-(4, 1, 4),
-(5, 1, 1),
-(7, 1, 2),
-(10, 1, 1),
-(12, 1, 4),
-(13, 1, 3),
-(21, 1, 2),
-(7, 1, 2),
-(21, 1, 2),
-(2, 1, 3),
-(13, 1, 3),
-(4, 1, 4),
-(12, 1, 4),
-(1, 1, 5),
-(2, 1, 5),
-(1, 1, 6),
-(2, 1, 6),
-(13, 1, 7),
-(21, 1, 7),
-(1, 1, 8),
-(2, 1, 8),
-(1, 1, 9),
-(2, 1, 9),
-(13, 1, 10),
-(21, 1, 10);
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `calcul`
 --
 
 DROP TABLE IF EXISTS `calcul`;
 CREATE TABLE IF NOT EXISTS `calcul` (
   `idCalcul` int(11) NOT NULL AUTO_INCREMENT,
-  `operation` varchar(5) NOT NULL,
-  `resultat` varchar(50) NOT NULL,
-  `reponseEleve` varchar(50) NOT NULL,
+  `operation` varchar(50) NOT NULL,
   `reponseJuste` tinyint(1) NOT NULL,
   `idExo1Math` int(11) DEFAULT NULL,
   `idExo2Math` int(11) DEFAULT NULL,
   PRIMARY KEY (`idCalcul`) USING BTREE,
   KEY `idExo1Math` (`idExo1Math`),
   KEY `idExo2Math` (`idExo2Math`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `calcul`
 --
 
-INSERT INTO `calcul` (`idCalcul`, `operation`, `resultat`, `reponseEleve`, `reponseJuste`, `idExo1Math`, `idExo2Math`) VALUES
-(1, '15+3', '>10', '>10', 1, 1, NULL),
-(2, '12+13', '>21', '>7 >21', 0, 1, NULL),
-(3, '20+7', '>13', '>13', 1, 1, NULL),
-(4, '1+2', '<4', '<4', 1, 1, NULL),
-(5, '13-8', '>2', '>2', 1, 1, NULL),
-(6, '1+7', '>2', '>2', 1, 1, NULL),
-(7, '14-2', '<13', '>21', 0, 1, NULL),
-(8, '13-8', '>2', '>2', 1, 1, NULL),
-(9, '1+7', '>2', '>2', 1, 1, NULL),
-(10, '14-2', '<13', '>21', 0, 1, NULL);
+INSERT INTO `calcul` (`idCalcul`, `operation`, `reponseJuste`, `idExo1Math`, `idExo2Math`) VALUES
+(11, '4+4', 1, 9, NULL),
+(12, '2+4', 1, 9, NULL),
+(13, '2+8', 1, 9, NULL),
+(14, '4+4', 1, NULL, 6),
+(15, '2+4', 1, NULL, 6),
+(16, '2+8', 1, NULL, 6);
 
 -- --------------------------------------------------------
 
@@ -118,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `classe` (
   `nomClasse` varchar(50) NOT NULL,
   PRIMARY KEY (`classeId`),
   UNIQUE KEY `nom` (`nomClasse`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `classe`
@@ -130,7 +76,8 @@ INSERT INTO `classe` (`classeId`, `nomClasse`) VALUES
 (40, 'CE2'),
 (41, 'CM1'),
 (42, 'CM2'),
-(38, 'CP');
+(38, 'CP'),
+(44, 'IPS');
 
 -- --------------------------------------------------------
 
@@ -177,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `eleve` (
   PRIMARY KEY (`idEleve`),
   UNIQUE KEY `nomPrenom` (`nomPrenom`,`dateDeNaissance`,`classeId`),
   KEY `classeId` (`classeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `eleve`
@@ -188,9 +135,9 @@ INSERT INTO `eleve` (`nomPrenom`, `dateDeNaissance`, `classeId`, `idEleve`) VALU
 ('Alban DePoisson', '2000-02-02', 39, 40),
 ('Ali Gator', '2000-03-01', 39, 39),
 ('Amandine Auzor', '2001-04-04', 38, 35),
-('Aude Javel', '1998-06-05', 42, 51),
 ('Cécile Enssieux', '1998-05-05', 41, 56),
 ('Colette Sterolle', '2000-05-05', 41, 57),
+('CORDON Paul', '1996-10-09', 44, 63),
 ('Daisy Démalplacé', '2000-02-01', 39, 37),
 ('Eddy Donmarcel', '2001-07-06', 41, 58),
 ('Eli Coptère', '1999-01-02', 40, 41),
@@ -202,13 +149,7 @@ INSERT INTO `eleve` (`nomPrenom`, `dateDeNaissance`, `classeId`, `idEleve`) VALU
 ('Kelly Diote', '1999-12-04', 40, 45),
 ('Lara Tatouille', '1999-06-06', 40, 44),
 ('Laure Voiretmerci', '2000-12-31', 40, 61),
-('Milène Micoton', '1998-10-05', 42, 46),
-('Paul Ochon', '2001-03-03', 38, 34),
-('Pierre Rocher', '2001-02-02', 38, 33),
-('Pit za', '1998-07-08', 42, 47),
-('René Kicoul', '1998-02-06', 42, 48),
-('Terry Dicule', '1998-11-04', 42, 49),
-('Thomas Jemalhales', '1998-10-04', 42, 52);
+('Pierre Rocher', '2001-02-02', 38, 33);
 
 -- --------------------------------------------------------
 
@@ -234,7 +175,14 @@ CREATE TABLE IF NOT EXISTS `enonce` (
   KEY `mot5` (`mot5`),
   KEY `mot6` (`mot6`),
   KEY `mot1_2` (`mot1`,`mot2`,`mot3`,`mot4`,`mot5`,`mot6`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `enonce`
+--
+
+INSERT INTO `enonce` (`idEnonce`, `mot1`, `mot2`, `mot3`, `mot4`, `mot5`, `mot6`) VALUES
+(1, 'maison', 'maçon', 'poisson', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -259,17 +207,24 @@ CREATE TABLE IF NOT EXISTS `enonceparam` (
 DROP TABLE IF EXISTS `exo1lecture`;
 CREATE TABLE IF NOT EXISTS `exo1lecture` (
   `idExo1Lecture` int(11) NOT NULL AUTO_INCREMENT,
-  `mot` varchar(50) NOT NULL,
   `idParamEl1` int(11) NOT NULL,
   `idEleve` int(11) NOT NULL,
   `idEnonce` int(11) NOT NULL,
   `resultat` varchar(20) NOT NULL,
+  `date` datetime NOT NULL,
   PRIMARY KEY (`idExo1Lecture`),
-  KEY `mot` (`mot`),
   KEY `idParamEl1` (`idParamEl1`),
   KEY `idEleve` (`idEleve`),
   KEY `idEnonce` (`idEnonce`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `exo1lecture`
+--
+
+INSERT INTO `exo1lecture` (`idExo1Lecture`, `idParamEl1`, `idEleve`, `idEnonce`, `resultat`, `date`) VALUES
+(5, 5, 56, 1, '8 sur 10', '2018-06-10 13:10:02'),
+(6, 5, 56, 1, '8 sur 10', '2018-06-10 13:10:02');
 
 -- --------------------------------------------------------
 
@@ -283,17 +238,19 @@ CREATE TABLE IF NOT EXISTS `exo1math` (
   `idParamEm1` int(11) NOT NULL,
   `idEleve` int(11) NOT NULL,
   `score` varchar(11) NOT NULL,
+  `date` datetime NOT NULL,
   PRIMARY KEY (`idExo1Math`),
   KEY `idParamEm1` (`idParamEm1`),
   KEY `idEleve` (`idEleve`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `exo1math`
 --
 
-INSERT INTO `exo1math` (`idExo1Math`, `idParamEm1`, `idEleve`, `score`) VALUES
-(1, 4, 59, '7/10');
+INSERT INTO `exo1math` (`idExo1Math`, `idParamEm1`, `idEleve`, `score`, `date`) VALUES
+(9, 4, 58, '8 sur 10', '2018-06-10 13:10:02'),
+(10, 4, 58, '8 sur 10', '2018-06-10 13:10:02');
 
 -- --------------------------------------------------------
 
@@ -307,10 +264,20 @@ CREATE TABLE IF NOT EXISTS `exo2math` (
   `idParamEm2` int(11) NOT NULL,
   `idEleve` int(11) NOT NULL,
   `score` varchar(20) NOT NULL,
+  `date` datetime NOT NULL,
   PRIMARY KEY (`idExo2Math`),
   KEY `idParamEm2` (`idParamEm2`),
   KEY `idEleve` (`idEleve`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `exo2math`
+--
+
+INSERT INTO `exo2math` (`idExo2Math`, `idParamEm2`, `idEleve`, `score`, `date`) VALUES
+(6, 5, 57, '8 sur 10', '2018-06-10 13:10:02'),
+(7, 5, 57, '8 sur 10', '2018-06-10 13:10:02'),
+(8, 5, 57, '8 sur 10', '2018-06-10 13:10:02');
 
 -- --------------------------------------------------------
 
@@ -120506,7 +120473,7 @@ CREATE TABLE IF NOT EXISTS `paramel1` (
   `idParamEl1` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`idParamEl1`),
   UNIQUE KEY `nom` (`nom`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `paramel1`
@@ -120542,23 +120509,16 @@ CREATE TABLE IF NOT EXISTS `parameleve` (
 INSERT INTO `parameleve` (`idEleve`, `idParamEm1`, `idParamEm2`, `idParamEl1`) VALUES
 (32, 5, 5, 5),
 (33, 5, 5, 5),
-(34, 5, 5, 5),
 (35, 5, 5, 5),
-(37, 5, 6, 6),
+(37, 4, 6, 6),
 (38, 5, 6, 6),
 (39, 5, 6, 6),
-(40, 5, 6, 6),
+(40, 4, 6, 6),
 (41, 5, NULL, NULL),
 (42, 5, NULL, NULL),
 (43, 5, NULL, NULL),
 (44, 5, NULL, NULL),
 (45, 5, NULL, NULL),
-(46, 5, NULL, NULL),
-(47, 5, NULL, NULL),
-(48, 5, NULL, NULL),
-(49, 5, NULL, NULL),
-(51, 5, NULL, NULL),
-(52, 5, NULL, NULL),
 (53, 5, 5, 5),
 (61, 5, NULL, NULL);
 
@@ -120712,17 +120672,12 @@ CREATE TABLE IF NOT EXISTS `souscompetenceeleve` (
 --
 
 INSERT INTO `souscompetenceeleve` (`idEleve`, `idSousCompetence`, `progression`, `nbTest`) VALUES
-(33, 1, 50, 170);
+(33, 1, 50, 170),
+(33, 2, 60, 20);
 
 --
 -- Contraintes pour les tables déchargées
 --
-
---
--- Contraintes pour la table `borne`
---
-ALTER TABLE `borne`
-  ADD CONSTRAINT `borne_ibfk_1` FOREIGN KEY (`idCalcul`) REFERENCES `calcul` (`idCalcul`);
 
 --
 -- Contraintes pour la table `calcul`
@@ -120760,7 +120715,6 @@ ALTER TABLE `enonceparam`
 --
 ALTER TABLE `exo1lecture`
   ADD CONSTRAINT `exo1lecture_ibfk_1` FOREIGN KEY (`idParamEl1`) REFERENCES `paramel1` (`idParamEl1`),
-  ADD CONSTRAINT `exo1lecture_ibfk_2` FOREIGN KEY (`mot`) REFERENCES `mots` (`mot`),
   ADD CONSTRAINT `exo1lecture_ibfk_3` FOREIGN KEY (`idEleve`) REFERENCES `eleve` (`idEleve`),
   ADD CONSTRAINT `exo1lecture_ibfk_4` FOREIGN KEY (`idEnonce`) REFERENCES `enonce` (`idEnonce`);
 
@@ -120768,7 +120722,8 @@ ALTER TABLE `exo1lecture`
 -- Contraintes pour la table `exo1math`
 --
 ALTER TABLE `exo1math`
-  ADD CONSTRAINT `exo1math_ibfk_1` FOREIGN KEY (`idParamEm1`) REFERENCES `paramem1` (`idParamEm1`);
+  ADD CONSTRAINT `exo1math_ibfk_1` FOREIGN KEY (`idParamEm1`) REFERENCES `paramem1` (`idParamEm1`),
+  ADD CONSTRAINT `exo1math_ibfk_2` FOREIGN KEY (`idEleve`) REFERENCES `eleve` (`idEleve`);
 
 --
 -- Contraintes pour la table `exo2math`
